@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Map My Campus</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    nav {
+      background-color: rgb(158, 5, 228);
+      width: 100%;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .nav-container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .title-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .head1 {
+      font-size: 3rem;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    .input-section {
+      width: 100%;
+    }
+
+    .input-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .input-wrapper {
+      flex: 1;
+      min-width: 300px;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .input-label {
+      color: #04279a;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+      display: block;
+      width: 80%;
+      text-align: left;
+    }
+
+    .input-area {
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    #fromBox, #toBox {
+      background-color: #041f76;
+      border-radius: 10px;
+      width: 80%;
+      height: 50px;
+      padding: 0 15px;
+      font-size: 1.1rem;
+      border: 2px solid rgb(5, 5, 79);
+      color: white;
+      transition: border-color 0.3s;
+      margin-bottom: 5%;
+    }
+
+    #fromBox:focus, #toBox:focus {
+      outline: none;
+      border-color: #e0e2ea;
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .dropdown {
+      margin-top: -3%;
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      max-height: 245px;
+      overflow-y: auto;
+      background-color: white;
+      border: 1px solid #597ae8;
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      list-style-type: none;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(89, 87, 87, 0.1);
+    }
+
+    .dropdown li {
+      padding: 10px 12px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+      font-size: 1.2rem;
+      text-align: center;
+      transition: all 0.2s;
+      font-family: 'Times New Roman', Times, serif;
+    }
+
+    .dropdown li:last-child {
+      border-bottom: none;
+    }
+
+    .dropdown li:hover {
+      background-color: #bbadad;
+      color: #1a49e2;
+    }
+
+    .swap-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 60px;
+      padding-top: 37px;
+      margin: 0 10px;
+    }
+
+    .swapbox {
+      width: 50px;
+      height: 45px;
+      cursor: pointer;
+      border-radius: 18px;
+      transition: transform 0.3s;
+      background-color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .swapbox:hover {
+      transform: scale(1.1);
+    }
+
+    .rotate-once {
+      animation: rotateOnce 0.35s ease-in-out forwards;
+    }
+
+    @keyframes rotateOnce {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(180deg); }
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      background-color: rgb(5, 5, 79);
+      color: white;
+      width: 140px;
+      height: 45px;
+      border-radius: 18px;
+      font-size: 1.1rem;
+      border: 2px solid rgb(5, 5, 79);
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: yellow;
+      color: rgb(10, 10, 10);
+      border-color: yellow;
+      transform: translateY(-2px);
+    }
+
+    .map-section {
+      flex: 1;
+      width: 100%;
+      position: relative;
+      background-color: #f5f5f5;
+      overflow: hidden;
+    }
+
+    .map-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .current-location-btn {
+      position: absolute;
+      bottom: 100px;
+      right: 20px;
+      z-index: 1000;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s;
+    }
+
+    .current-location-btn:hover {
+      background-color: #0056b3;
+      transform: scale(1.1);
+    }
+
+    .landmark-toggle-btn {
+      position: absolute;
+      bottom: 30px;
+      right: 20px;
+      z-index: 1000;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s;
+    }
+
+    .landmark-toggle-btn:hover {
+      background-color: #218838;
+      transform: scale(1.1);
+    }
+
+    .landmark-toggle-btn.inactive {
+      background-color: #dc3545;
+    }
+
+    .landmark-toggle-btn.inactive:hover {
+      background-color: #c82333;
+    }
+
+    @media screen and (max-width: 768px) {
+      .head1 {
+        font-size: 2rem;
+      }
+      
+      .input-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+        gap: 10px 15px;
+        align-items: start;
+        max-width: 500px;
+        margin: 0 auto 15px;
+      }
+
+      .swap-container {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        padding-top: 35px;
+        margin: 0;
+        width: 60px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .input-wrapper {
+        grid-column: 1;
+        width: 100%;
+        max-width: none;
+        min-width: auto;
+        margin: 0;
+      }
+
+      .input-wrapper:first-child {
+        grid-row: 1;
+        margin-bottom: 5px;
+      }
+
+      .input-wrapper:last-child {
+        grid-row: 2;
+        margin-top: 0;
+      }
+
+      #fromBox, #toBox {
+        width: 100%;
+        height: 45px;
+        margin-bottom: 0;
+      }
+
+      .dropdown {
+        width: 100%;
+      }
+
+      .input-label {
+        font-size: 1.2rem;
+        width: 100%;
+      }
+
+      button {
+        width: 120px;
+        height: 40px;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-container">
+      <div class="title-container">
+        <h1 class="head1">Map My Campus</h1>
+      </div>
+
+      <div class="input-section">
+        <div class="input-row">
+          <div class="input-wrapper" id="from-area">
+            <label class="input-label" for="fromBox">From:</label>
+            <div class="input-area">
+              <input type="text" id="fromBox" placeholder="Enter Your Current Location" onclick="showList('fromList')"
+                onkeyup="filterItems('fromBox', 'fromList')">
+              <ul id="fromList" class="dropdown"></ul>
+            </div>
+          </div>
+
+          <div class="swap-container">
+            <div class="swapbox">⇄</div>
+          </div>
+
+          <div class="input-wrapper" id="to-area">
+            <label class="input-label" for="toBox">To:</label>
+            <div class="input-area">
+              <input type="text" id="toBox" placeholder="Enter Your Destination" onclick="showList('toList')"
+                onkeyup="filterItems('toBox', 'toList')">
+              <ul id="toList" class="dropdown"></ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="button-container">
+          <button id="but1" onclick="searchRoute()">Search</button>
+          <button id="but2" onclick="clearRoute()">Clear</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div id="mapSection" class="map-section">
+    <button id="currentLocationBtn" class="current-location-btn">
+        <i class="fas fa-location-crosshairs"></i>
+    </button>
+    <button id="landmarkToggleBtn" class="landmark-toggle-btn">
+        <i class="fas fa-map-pin"></i>
+    </button>
+    <div id="mapContainer" class="map-container"></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+  
+  <script>
+    // Global variables
+    let campusMap;
+    let userLocationMarker;
+    let accuracyCircle;
+    let userWatchId = null;
+    let userLatLng = null;
+    let startMarker = null;
+    let endMarker = null;
+    let routeLayerGroup = null;
+    let landmarkMarkersLayer = null;
+    let landmarksVisible = true;
+    
+    let graph = { nodes: [], edges: [] };
+    let nodeIndex = new Map();
+    let places = [];
+    let lastResults;
+    const KROUTES = 5;
+
+    // Landmarks data
+    const landmarks = [
+      {"id":"front","name":"Front Gate","lat":11.034820,"lng":77.033845},
+      {"id":"admiss","name":"Admission Office","lat":11.032585,"lng":77.033888},
+      {"id":"lib","name":"Library","lat":11.033664,"lng":77.033435},
+      {"id":"prin","name":"Principal Office","lat":11.033269,"lng":77.033861},
+      {"id":"sf","name":"S F Office","lat":11.033111,"lng":77.033410},
+      {"id":"aided","name":"Aided Office","lat":11.033277,"lng":77.034183},
+      {"id":"hostel","name":"Hostel Office","lat":11.032646,"lng":77.035449},
+      {"id":"can1","name":"Canteen 1","lat":11.033695,"lng":77.034336},
+      {"id":"can2","name":"Canteen 2","lat":11.032013,"lng":77.032709},
+      {"id":"grd","name":"GRD Auditorium","lat":11.032415,"lng":77.033340},
+      {"id":"ab","name":"A Block","lat":11.033230,"lng":77.032509},
+      {"id":"bb","name":"B Block","lat":11.033238,"lng":77.033060},
+      {"id":"cb","name":"C Block","lat":11.032550,"lng":77.032936},
+      {"id":"db","name":"D Block","lat":11.033280,"lng":77.034520},
+      {"id":"eb","name":"E Block","lat":11.032854,"lng":77.034351},
+      {"id":"fb","name":"F Block","lat":11.032630,"lng":77.035112},
+      {"id":"gb","name":"G Block","lat":11.032609,"lng":77.034594},
+      {"id":"qb","name":"Q Block","lat":11.034020,"lng":77.034499},
+      {"id":"back","name":"Back Gate","lat":11.031834,"lng":77.036534}
+    ];
+
+    const graphData = {
+      "nodes": [
+        {"id": "G1", "lat": 11.034820, "lng": 77.033845},
+        {"id": "G2", "lat": 11.034563, "lng": 77.033848},
+        {"id": "G3", "lat": 11.034275, "lng": 77.033855},
+        {"id": "G4", "lat": 11.034303, "lng": 77.034100},
+        {"id": "G5", "lat": 11.034320, "lng": 77.034371},
+        {"id": "G6", "lat": 11.034343, "lng": 77.034768},
+        {"id": "G7", "lat": 11.034369, "lng": 77.035226},
+        {"id": "G8", "lat": 11.034391, "lng": 77.035535},
+        {"id": "G9", "lat": 11.033964, "lng": 77.035553},
+        {"id": "G10", "lat": 11.034000, "lng": 77.035806},
+        {"id": "G11", "lat": 11.034019, "lng": 77.035980},
+        {"id": "G12", "lat": 11.034009, "lng": 77.036093},
+        {"id": "G13", "lat": 11.033956, "lng": 77.036219},
+        {"id": "G14", "lat": 11.033834, "lng": 77.036351},
+        {"id": "G15", "lat": 11.033289, "lng": 77.036422},
+        {"id": "G16", "lat": 11.032674, "lng": 77.036463},
+        {"id": "G17", "lat": 11.032278, "lng": 77.036498},
+        {"id": "G18", "lat": 11.031834, "lng": 77.036534},
+        {"id": "G19", "lat": 11.034009, "lng": 77.033856},
+        {"id": "G20", "lat": 11.033670, "lng": 77.033854},
+        {"id": "G21", "lat": 11.033666, "lng": 77.033679},
+        {"id": "G22", "lat": 11.033664, "lng": 77.033435},
+        {"id": "G23", "lat": 11.033651, "lng": 77.033413},
+        {"id": "G24", "lat": 11.033482, "lng": 77.033410},
+        {"id": "G25", "lat": 11.033245, "lng": 77.033413},
+        {"id": "G26", "lat": 11.033238, "lng": 77.033060},
+        {"id": "G27", "lat": 11.033240, "lng": 77.032791},
+        {"id": "G28", "lat": 11.033230, "lng": 77.032509},
+        {"id": "G29", "lat": 11.033111, "lng": 77.033410},
+        {"id": "G30", "lat": 11.032566, "lng": 77.033426},
+        {"id": "G31", "lat": 11.032410, "lng": 77.033432},
+        {"id": "G32", "lat": 11.032415, "lng": 77.033340},
+        {"id": "G33", "lat": 11.032410, "lng": 77.033218},
+        {"id": "G34", "lat": 11.032413, "lng": 77.032941},
+        {"id": "G35", "lat": 11.032558, "lng": 77.033215},
+        {"id": "G36", "lat": 11.032550, "lng": 77.032936},
+        {"id": "G37", "lat": 11.032545, "lng": 77.032686},
+        {"id": "G38", "lat": 11.032397, "lng": 77.032700},
+        {"id": "G39", "lat": 11.032179, "lng": 77.032700},
+        {"id": "G40", "lat": 11.032013, "lng": 77.032709},
+        {"id": "G41", "lat": 11.033400, "lng": 77.033864},
+        {"id": "G42", "lat": 11.033266, "lng": 77.033756},
+        {"id": "G43", "lat": 11.033269, "lng": 77.033861},
+        {"id": "G44", "lat": 11.033270, "lng": 77.033949},
+        {"id": "G45", "lat": 11.033277, "lng": 77.034183},
+        {"id": "G46", "lat": 11.033274, "lng": 77.034335},
+        {"id": "G47", "lat": 11.033687, "lng": 77.034317},
+        {"id": "G48", "lat": 11.033690, "lng": 77.034505},
+        {"id": "G49", "lat": 11.034020, "lng": 77.034499},
+        {"id": "G50", "lat": 11.034161, "lng": 77.034480},
+        {"id": "G51", "lat": 11.034203, "lng": 77.034380},
+        {"id": "G52", "lat": 11.033114, "lng": 77.034342},
+        {"id": "G53", "lat": 11.032854, "lng": 77.034351},
+        {"id": "G54", "lat": 11.032605, "lng": 77.034346},
+        {"id": "G55", "lat": 11.032585, "lng": 77.033888},
+        {"id": "G56", "lat": 11.032609, "lng": 77.034594},
+        {"id": "G57", "lat": 11.032630, "lng": 77.035112},
+        {"id": "G58", "lat": 11.033135, "lng": 77.035095},
+        {"id": "G59", "lat": 11.033130, "lng": 77.034715},
+        {"id": "G60", "lat": 11.033706, "lng": 77.035081},
+        {"id": "G61", "lat": 11.033711, "lng": 77.035527},
+        {"id": "G62", "lat": 11.033743, "lng": 77.035548},
+        {"id": "G63", "lat": 11.032657, "lng": 77.035551},
+        {"id": "G64", "lat": 11.032646, "lng": 77.035449},
+        {"id": "G65", "lat": 11.032634, "lng": 77.035259},
+        {"id": "G66", "lat": 11.032652, "lng": 77.035604},
+        {"id": "G67", "lat": 11.032658, "lng": 77.035875},
+        {"id": "G68", "lat": 11.032665, "lng": 77.036175},
+        {"id": "G69", "lat": 11.032188, "lng": 77.035270},
+        {"id": "G70", "lat": 11.031744, "lng": 77.035278},
+        {"id": "G71", "lat": 11.031262, "lng": 77.035285},
+        {"id": "G72", "lat": 11.030725, "lng": 77.035295},
+        {"id": "G73", "lat": 11.032163, "lng": 77.034363},
+        {"id": "G74", "lat": 11.032160, "lng": 77.033896},
+        {"id": "G75", "lat": 11.032140, "lng": 77.033440},
+        {"id": "G76", "lat": 11.032534, "lng": 77.032396},
+        {"id": "G77", "lat": 11.032587, "lng": 77.032278},
+        {"id": "G78", "lat": 11.032690, "lng": 77.032223},
+        {"id": "G79", "lat": 11.033037, "lng": 77.032115},
+        {"id": "G80", "lat": 11.033182, "lng": 77.032198},
+        {"id": "G81", "lat": 11.033232, "lng": 77.032396}
+      ],
+      "edges": [
+        ["G1","G2"],["G2","G3"],["G3","G4"],["G4","G5"],["G5","G6"],
+        ["G6","G7"],["G7","G8"],["G8","G9"],["G9","G10"],["G10","G11"],
+        ["G11","G12"],["G12","G13"],["G13","G14"],["G14","G15"],["G15","G16"],
+        ["G16","G17"],["G17","G18"],["G9","G62"],["G62","G61"],["G61","G63"],
+        ["G63","G66"],["G66","G67"],["G67","G68"],["G68","G16"],["G5","G51"],
+        ["G51","G50"],["G50","G49"],["G49","G48"],["G48","G60"],["G60","G61"],
+        ["G60","G58"],["G58","G57"],["G57","G65"],["G65","G64"],["G64","G63"],
+        ["G57","G56"],["G56","G54"],["G3","G19"],["G19","G20"],["G20","G47"],
+        ["G47","G46"],["G47","G48"],["G46","G52"],["G46","G68"],["G52","G59"],
+        ["G59","G58"],["G52","G53"],["G53","G54"],["G20","G41"],["G41","G44"],
+        ["G44","G45"],["G45","G46"],["G44","G43"],["G41","G42"],["G42","G43"],
+        ["G42","G25"],["G20","G21"],["G21","G22"],["G22","G23"],["G23","G24"],
+        ["G24","G25"],["G25","G29"],["G29","G30"],["G30","G31"],["G31","G32"],
+        ["G30","G55"],["G54","G55"],["G32","G33"],["G30","G35"],["G35","G33"],
+        ["G35","G36"],["G33","G34"],["G36","G34"],["G36","G57"],["G34","G38"],
+        ["G37","G38"],["G38","G39"],["G39","G40"],["G25","G26"],["G26","G27"],
+        ["G27","G28"],["G28","G81"],["G81","G80"],["G80","G79"],["G79","G78"],
+        ["G78","G77"],["G77","G76"],["G76","G37"],["G31","G75"],["G54","G73"],
+        ["G73","G74"],["G74","G75"],["G55","G74"],["G65","G69"],["G69","G70"],
+        ["G70","G71"],["G71","G72"]
+      ]
+    };
+
+    const locationsList = [
+      'Current Location',
+      'Front Gate',
+      'Admission Office',
+      'Library',
+      'Principal Office',
+      'S F Office',
+      'Aided Office',
+      'Hostel Office',
+      'Canteen 1',
+      'Canteen 2',
+      'GRD Auditorium',
+      'A Block',
+      'B Block',
+      'C Block',
+      'D Block',
+      'E Block',
+      'F Block',
+      'G Block',
+      'Q Block',
+      'Back Gate'
+    ];
+
+    const landmarkMapping = {
+      'Front Gate': 'front',
+      'Admission Office': 'admiss',
+      'Library': 'lib',
+      'Principal Office': 'prin',
+      'S F Office': 'sf',
+      'Aided Office': 'aided',
+      'Hostel Office': 'hostel',
+      'Canteen 1': 'can1',
+      'Canteen 2': 'can2',
+      'GRD Auditorium': 'grd',
+      'A Block': 'ab',
+      'B Block': 'bb',
+      'C Block': 'cb',
+      'D Block': 'db',
+      'E Block': 'eb',
+      'F Block': 'fb',
+      'G Block': 'gb',
+      'Q Block': 'qb',
+      'Back Gate': 'back'
+    };
+
+    // UI Functions
+    function filterItems(inputId, listId) {
+      const input = document.getElementById(inputId);
+      const list = document.getElementById(listId);
+      const items = Array.from(list.getElementsByTagName("li"));
+      const filter = input.value.toLowerCase();
+
+      items.forEach(item => item.style.display = "none");
+
+      if (!filter) {
+        items.forEach(item => item.style.display = "");
+        return;
+      }
+
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (text.startsWith(filter)) item.style.display = "";
+      });
+
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (!text.startsWith(filter) && text.includes(filter)) item.style.display = "";
+      });
+    }
+
+    function showList(listId) {
+      document.querySelectorAll(".dropdown").forEach(list => list.style.display = "none");
+      const list = document.getElementById(listId);
+      list.style.display = "block";
+    }
+
+    function setupSwapButton() {
+      const swapIcon = document.querySelector(".swapbox");
+      if (swapIcon) {
+        swapIcon.addEventListener("click", () => {
+          const fromBox = document.getElementById("fromBox");
+          const toBox = document.getElementById("toBox");
+          [fromBox.value, toBox.value] = [toBox.value, fromBox.value];
+          swapIcon.classList.add("rotate-once");
+          swapIcon.addEventListener("animationend", () => {
+            swapIcon.classList.remove("rotate-once");
+          }, { once: true });
+        });
+      }
+    }
+
+    function clearRoute() {
+      document.getElementById("fromBox").value = "";
+      document.getElementById("toBox").value = "";
+      document.querySelectorAll(".dropdown").forEach(list => list.style.display = "none");
+
+      if (campusMap) {
+        clearRoutes();
+      }
+    }
+
+    function setupGlobalClickHandler() {
+      document.addEventListener("click", function (e) {
+        if (e.target.tagName === "LI" && e.target.closest(".dropdown")) {
+          const input = e.target.closest(".input-wrapper").querySelector("input");
+          if (input) {
+            input.value = e.target.textContent;
+            e.target.closest(".dropdown").style.display = "none";
+          }
+          return;
+        }
+
+        const isInsideInput = [...document.querySelectorAll(".input-wrapper")].some(wrapper => wrapper.contains(e.target));
+        if (!isInsideInput) {
+          setTimeout(() => {
+            document.querySelectorAll(".dropdown").forEach(list => {
+              list.style.display = "none";
+            });
+          }, 100);
+        }
+      });
+    }
+
+    // Map initialization
+    function initializeMap() {
+      if (campusMap) {
+        campusMap.invalidateSize();
+        return;
+      }
+
+      const campusCenter = L.latLng(11.033114, 77.034342);
+      const campusBounds = L.latLngBounds(
+        L.latLng(11.029847, 77.032077),
+        L.latLng(11.035600, 77.036616)
+      );
+
+      campusMap = L.map('mapContainer', {
+        maxBounds: campusBounds,
+        maxBoundsViscosity: 1.0,
+        minZoom: 15.5,
+        maxZoom: 19,
+        preferCanvas: true,
+        attributionControl: false
+      }).setView([11.033400, 77.033864], 18);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 20,
+        attribution: '',
+        updateWhenIdle: true,
+        updateWhenZooming: false,
+        keepBuffer: 2
+      }).addTo(campusMap);
+
+      loadCampusData();
+      initializeLandmarkMarkers();
+      
+      console.log('Map initialized successfully');
+    }
+
+    function loadCampusData() {
+      places = landmarks;
+      graph = JSON.parse(JSON.stringify(graphData));
+      nodeIndex = new Map(graph.nodes.map((n, i) => [n.id, i]));
+      addLandmarkEntranceNodes();
+      console.log('Campus data loaded successfully');
+    }
+
+    // Haversine distance
+    function hav(a, b) {
+      const R = 6371000;
+      const toR = x => x * Math.PI / 180;
+      const dLat = toR(b.lat - a.lat);
+      const dLng = toR(b.lng - a.lng);
+      const s = Math.sin(dLat / 2) ** 2 + Math.cos(toR(a.lat)) * Math.cos(toR(b.lat)) * Math.sin(dLng / 2) ** 2;
+      return 2 * R * Math.asin(Math.sqrt(s));
+    }
+
+    function nearestPointOnSegment(p, a, b) {
+      const px = p.lng, py = p.lat;
+      const ax = a.lng, ay = a.lat;
+      const bx = b.lng, by = b.lat;
+      const ABx = bx - ax, ABy = by - ay;
+      const APx = px - ax, APy = py - ay;
+      const ABAB = ABx * ABx + ABy * ABy;
+      const APAB = APx * ABx + APy * ABy;
+      if (ABAB === 0) return { lat: a.lat, lng: a.lng };
+      let t = APAB / ABAB;
+      t = Math.max(0, Math.min(1, t));
+      return { lat: ay + t * ABy, lng: ax + t * ABx };
+    }
+
+    function addLandmarkEntranceNodes() {
+      places.forEach(p => {
+        const entId = `ENT_${p.id}`;
+        const entNode = { id: entId, lat: p.lat, lng: p.lng };
+        graph.nodes.push(entNode);
+        
+        let bestDist = Infinity, bestNodeId = null, bestEdge = null, bestPointOnEdge = null;
+        
+        for (let i = 0; i < graph.nodes.length - 1; i++) {
+          const d = hav(p, graph.nodes[i]);
+          if (d < bestDist) { bestDist = d; bestNodeId = graph.nodes[i].id; bestEdge = null; }
+        }
+        
+        for (const [aId, bId] of graph.edges) {
+          const aIdx = graph.nodes.findIndex(n => n.id === aId);
+          const bIdx = graph.nodes.findIndex(n => n.id === bId);
+          if (aIdx === -1 || bIdx === -1) continue;
+          const a = graph.nodes[aIdx], b = graph.nodes[bIdx];
+          const nearestPoint = nearestPointOnSegment(p, a, b);
+          const d = hav(p, nearestPoint);
+          if (d < bestDist) { bestDist = d; bestEdge = [aId, bId]; bestPointOnEdge = nearestPoint; bestNodeId = null; }
+        }
+        
+        if (bestEdge && bestPointOnEdge) {
+          const splitNodeId = `SPLIT_${p.id}`;
+          const splitNode = { id: splitNodeId, lat: bestPointOnEdge.lat, lng: bestPointOnEdge.lng };
+          graph.nodes.push(splitNode);
+          
+          const edgeIndex = graph.edges.findIndex(e => (e[0] === bestEdge[0] && e[1] === bestEdge[1]) || (e[0] === bestEdge[1] && e[1] === bestEdge[0]));
+          if (edgeIndex !== -1) graph.edges.splice(edgeIndex, 1);
+          
+          graph.edges.push([bestEdge[0], splitNodeId]);
+          graph.edges.push([splitNodeId, bestEdge[1]]);
+          graph.edges.push([splitNodeId, entId]);
+        } else if (bestNodeId) {
+          graph.edges.push([bestNodeId, entId]);
+        }
+      });
+      
+      nodeIndex = new Map(graph.nodes.map((n, i) => [n.id, i]));
+    }
+
+    function buildAdj(removedEdges = new Set(), removedNodes = new Set()) {
+      const adj = Array(graph.nodes.length).fill(0).map(() => []);
+      for (const [aiId, biId] of graph.edges) {
+        const ai = nodeIndex.get(aiId), bi = nodeIndex.get(biId);
+        if (ai == null || bi == null) continue;
+        if (removedNodes.has(ai) || removedNodes.has(bi)) continue;
+        const keyAB = `${ai}-${bi}`;
+        const keyBA = `${bi}-${ai}`;
+        if (removedEdges.has(keyAB) || removedEdges.has(keyBA)) continue;
+        const a = graph.nodes[ai], b = graph.nodes[bi];
+        const w = hav(a, b);
+        adj[ai].push([bi, w]);
+        adj[bi].push([ai, w]);
+      }
+      return adj;
+    }
+
+    function dijkstra(adj, src, dst) {
+      const n = adj.length;
+      const dist = Array(n).fill(Infinity);
+      const prev = Array(n).fill(-1);
+      const used = Array(n).fill(false);
+      dist[src] = 0;
+      const pq = [{ d: 0, i: src }];
+      
+      const pop = () => {
+        if (!pq.length) return null;
+        let bi = -1, bd = Infinity;
+        for (let i = 0; i < pq.length; i++) {
+          if (pq[i].d < bd) { bd = pq[i].d; bi = i; }
+        }
+        return bi < 0 ? null : pq.splice(bi, 1)[0];
+      };
+
+      while (pq.length) {
+        const cur = pop();
+        if (!cur) break;
+        const u = cur.i;
+        if (used[u]) continue;
+        used[u] = true;
+        if (u === dst) break;
+        for (const [v, w] of adj[u]) {
+          if (!used[v] && dist[u] + w < dist[v]) {
+            dist[v] = dist[u] + w;
+            prev[v] = u;
+            pq.push({ d: dist[v], i: v });
+          }
+        }
+      }
+      
+      const path = [];
+      let u = dst;
+      if (prev[u] === -1 && u !== src) return { path: [], distance: Infinity };
+      while (u !== -1) { path.push(u); if (u === src) break; u = prev[u]; }
+      path.reverse();
+      return { path, distance: dist[dst] };
+    }
+
+    function pathDistance(indices) {
+      let d = 0;
+      for (let i = 0; i + 1 < indices.length; i++) {
+        d += hav(graph.nodes[indices[i]], graph.nodes[indices[i + 1]]);
+      }
+      return d;
+    }
+
+    function arraysEqual(a, b) {
+      if (a.length !== b.length) return false;
+      for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;
+      return true;
+    }
+
+    function yensKShortests(i, t, K) {
+      const A = [];
+      const B = [];
+      const adj0 = buildAdj();
+      const p0 = dijkstra(adj0, i, t);
+      if (!p0.path.length || !isFinite(p0.distance)) return A;
+      A.push(p0);
+
+      for (let k = 1; k < K; k++) {
+        const prevPath = A[k - 1].path;
+        for (let iSeg = 0; iSeg < prevPath.length - 1; iSeg++) {
+          const spurNode = prevPath[iSeg];
+          const rootPath = prevPath.slice(0, iSeg + 1);
+          const removedEdges = new Set();
+          const removedNodes = new Set();
+          
+          for (const p of A) {
+            const candidateRoot = p.path.slice(0, iSeg + 1);
+            if (arraysEqual(candidateRoot, rootPath) && p.path.length > iSeg + 1) {
+              const u = p.path[iSeg], v = p.path[iSeg + 1];
+              removedEdges.add(`${u}-${v}`);
+              removedEdges.add(`${v}-${u}`);
+            }
+          }
+          
+          for (const rpNode of rootPath.slice(0, -1)) { removedNodes.add(rpNode); }
+          const adj = buildAdj(removedEdges, removedNodes);
+          const spurRes = dijkstra(adj, spurNode, t);
+          
+          if (spurRes.path.length && isFinite(spurRes.distance)) {
+            const totalPath = rootPath.slice(0, -1).concat(spurRes.path);
+            const totalDist = pathDistance(totalPath);
+            if (!B.some(b => arraysEqual(b.path, totalPath))) {
+              B.push({ path: totalPath, distance: totalDist });
+            }
+          }
+        }
+        
+        if (!B.length) break;
+        B.sort((a, b) => a.distance - b.distance);
+        const best = B.shift();
+        A.push(best);
+        
+        const uniq = [];
+        for (const p of A) if (!uniq.some(q => arraysEqual(q.path, p.path))) uniq.push(p);
+        uniq.sort((a, b) => a.distance - b.distance);
+        A.splice(0, A.length, ...uniq);
+      }
+      return A;
+    }
+
+    function clearRoutes() {
+      if (routeLayerGroup) {
+        campusMap.removeLayer(routeLayerGroup);
+        routeLayerGroup = null;
+      }
+      if (startMarker) { campusMap.removeLayer(startMarker); startMarker = null; }
+      if (endMarker) { campusMap.removeLayer(endMarker); endMarker = null; }
+    }
+
+    function setStartEndMarkers(A, B) {
+      if (startMarker) { campusMap.removeLayer(startMarker); startMarker = null; }
+      if (endMarker) { campusMap.removeLayer(endMarker); endMarker = null; }
+
+      startMarker = L.circleMarker([A.lat, A.lng], {
+        radius: 8,
+        fillColor: '#1a73e8',
+        color: '#fff',
+        weight: 3,
+        opacity: 1,
+        fillOpacity: 1
+      }).addTo(campusMap).bindPopup(`<strong>Start:</strong> ${A.name}`);
+
+      endMarker = L.circleMarker([B.lat, B.lng], {
+        radius: 8,
+        fillColor: '#ea4335',
+        color: '#fff',
+        weight: 3,
+        opacity: 1,
+        fillOpacity: 1
+      }).addTo(campusMap).bindPopup(`<strong>Destination:</strong> ${B.name}`);
+    }
+
+    function renderSelectedRoute(selectedIndex) {
+      const results = lastResults;
+      if (!results || !results.length) return;
+
+      clearRoutes();
+
+      const layers = [];
+
+      results.forEach((res, idx) => {
+        const latlngs = res.path.map(i => [graph.nodes[i].lat, graph.nodes[i].lng]);
+        if (idx !== selectedIndex) {
+          const altBorder = L.polyline(latlngs, {
+            color: '#ffffff',
+            weight: 7,
+            opacity: 0.8,
+            lineCap: 'round',
+            lineJoin: 'round',
+            smoothFactor: 1.0
+          });
+          const alt = L.polyline(latlngs, {
+            color: '#8ab4f8',
+            weight: 4,
+            opacity: 0.7,
+            lineCap: 'round',
+            lineJoin: 'round',
+            smoothFactor: 1.0
+          });
+          alt.on('click', () => renderSelectedRoute(idx));
+          layers.push(altBorder, alt);
+        }
+      });
+
+      const selectedLatlngs = results[selectedIndex].path.map(i => [graph.nodes[i].lat, graph.nodes[i].lng]);
+      const selectedBorder = L.polyline(selectedLatlngs, {
+        color: '#ffffff',
+        weight: 9,
+        opacity: 0.9,
+        lineCap: 'round',
+        lineJoin: 'round',
+        smoothFactor: 1.0
+      });
+      const primaryRoute = L.polyline(selectedLatlngs, {
+        color: '#1967d2',
+        weight: 5,
+        opacity: 1,
+        lineCap: 'round',
+        lineJoin: 'round',
+        smoothFactor: 1.0
+      });
+
+      layers.push(selectedBorder, primaryRoute);
+      routeLayerGroup = L.layerGroup(layers).addTo(campusMap);
+
+      if (primaryRoute) {
+        setTimeout(() => {
+          campusMap.fitBounds(primaryRoute.getBounds().pad(0.2));
+        }, 100);
+      }
+
+      const meters = results[selectedIndex].distance;
+      const mins = Math.round((meters / 1.4) / 60);
+      const km = (meters / 1000).toFixed(2);
+      console.log(`Route selected: ${mins} min • ${km} km`);
+    }
+
+    function getLandmarkByNameOrId(name) {
+      if (name === 'Current Location') return null;
+      const landmarkId = landmarkMapping[name];
+      if (landmarkId) {
+        return places.find(p => p.id === landmarkId);
+      }
+      return places.find(p => p.name === name);
+    }
+
+    function searchRoute() {
+      const fromLocation = document.getElementById('fromBox').value;
+      const toLocation = document.getElementById('toBox').value;
+
+      if (!fromLocation || !toLocation) {
+        alert('Please select both From and To locations');
+        return;
+      }
+
+      if (!campusMap) {
+        initializeMap();
+        return;
+      }
+
+      startGeolocation();
+
+      if (fromLocation === 'Current Location') {
+        if (!userLatLng) {
+          alert('Waiting for your location... Please allow location access.');
+          navigator.geolocation.getCurrentPosition(
+            function(pos) {
+              userLatLng = [pos.coords.latitude, pos.coords.longitude];
+              searchRoute();
+            },
+            function(err) {
+              alert('Could not get your current location. Please select a location from the list.');
+            }
+          );
+          return;
+        }
+        
+        const B = getLandmarkByNameOrId(toLocation);
+        if (!B) {
+          alert('Invalid destination selected');
+          return;
+        }
+        
+        const userPos = { lat: userLatLng[0], lng: userLatLng[1] };
+        let nearestNodeId = null;
+        let minDistance = Infinity;
+        
+        graph.nodes.forEach((node, index) => {
+          const distance = hav(userPos, node);
+          if (distance < minDistance) {
+            minDistance = distance;
+            nearestNodeId = index;
+          }
+        });
+        
+        if (nearestNodeId === null) {
+          alert('Could not connect your location to the campus network');
+          return;
+        }
+        
+        const destNodeId = nodeIndex.get(`ENT_${B.id}`);
+        if (destNodeId === undefined) {
+          alert('Cannot find destination entrance node');
+          return;
+        }
+        
+        const results = yensKShortests(nearestNodeId, destNodeId, KROUTES);
+        if (!results.length) { 
+          alert('No path found from your current location.'); 
+          return; 
+        }
+        
+        lastResults = results;
+        setStartEndMarkers(
+          {lat: userLatLng[0], lng: userLatLng[1], name: 'Your Location'}, 
+          B
+        );
+        renderSelectedRoute(0);
+        
+      } else {
+        const A = getLandmarkByNameOrId(fromLocation);
+        const B = getLandmarkByNameOrId(toLocation);
+        
+        if (!A || !B) {
+          alert('Invalid location selected');
+          return;
+        }
+        
+        const si = nodeIndex.get(`ENT_${A.id}`);
+        const ti = nodeIndex.get(`ENT_${B.id}`);
+        
+        if (si === undefined || ti === undefined) {
+          alert('Cannot find entrance nodes for selected locations.');
+          return;
+        }
+        
+        const results = yensKShortests(si, ti, KROUTES);
+        if (!results.length) { 
+          alert('No path found between these locations.'); 
+          return; 
+        }
+        
+        lastResults = results;
+        setStartEndMarkers(A, B);
+        renderSelectedRoute(0);
+      }
+    }
+
+    function initializeLandmarkMarkers() {
+      landmarkMarkersLayer = L.layerGroup().addTo(campusMap);
+      
+      places.forEach(place => {
+        const icon = L.divIcon({
+          className: 'custom-landmark-marker',
+          html: `<div style="width: 32px; height: 32px; background: #e8f0fe; border: 2px solid #1a73e8; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">📍</div>`,
+          iconSize: [32, 32],
+          iconAnchor: [16, 16],
+          popupAnchor: [0, -16]
+        });
+        
+        L.marker([place.lat, place.lng], { icon: icon })
+          .bindPopup(`<strong>${place.name}</strong>`)
+          .addTo(landmarkMarkersLayer);
+      });
+    }
+
+    function toggleLandmarks() {
+      if (!landmarkMarkersLayer) return;
+      
+      const toggleBtn = document.getElementById('landmarkToggleBtn');
+      
+      if (landmarksVisible) {
+        campusMap.removeLayer(landmarkMarkersLayer);
+        landmarksVisible = false;
+        toggleBtn.classList.add('inactive');
+      } else {
+        campusMap.addLayer(landmarkMarkersLayer);
+        landmarksVisible = true;
+        toggleBtn.classList.remove('inactive');
+      }
+    }
+
+    function startGeolocation() {
+      if (!navigator.geolocation) {
+        alert("Geolocation is not supported by your browser");
+        return;
+      }
+
+      if (userWatchId) {
+        navigator.geolocation.clearWatch(userWatchId);
+      }
+
+      userWatchId = navigator.geolocation.watchPosition(
+        geolocationSuccess,
+        geolocationError,
+        {
+          enableHighAccuracy: true,
+          maximumAge: 1000,
+          timeout: 5000
+        }
+      );
+    }
+
+    function geolocationSuccess(pos) {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      const accuracy = pos.coords.accuracy;
+
+      userLatLng = [lat, lng];
+
+      if (userLocationMarker) {
+        campusMap.removeLayer(userLocationMarker);
+        userLocationMarker = null;
+      }
+      if (accuracyCircle) {
+        campusMap.removeLayer(accuracyCircle);
+        accuracyCircle = null;
+      }
+
+      userLocationMarker = L.circleMarker(userLatLng, {
+        radius: 10,
+        fillColor: '#4285F4',
+        color: '#ffffff',
+        weight: 3,
+        opacity: 1,
+        fillOpacity: 0.8
+      }).addTo(campusMap);
+
+      accuracyCircle = L.circle(userLatLng, {
+        radius: accuracy,
+        fillColor: '#4285F4',
+        color: '#4285F4',
+        weight: 1,
+        opacity: 0.3,
+        fillOpacity: 0.1
+      }).addTo(campusMap);
+
+      console.log(`Location: ${lat.toFixed(6)}, ${lng.toFixed(6)} - Accuracy: ${accuracy.toFixed(0)}m`);
+    }
+
+    function geolocationError(err) {
+      console.error('Geolocation error:', err);
+      switch (err.code) {
+        case err.PERMISSION_DENIED:
+          alert("Please allow geolocation access in your browser settings.");
+          break;
+        case err.POSITION_UNAVAILABLE:
+          alert("Location information is unavailable.");
+          break;
+        case err.TIMEOUT:
+          alert("The request to get your location timed out.");
+          break;
+        default:
+          alert("An unknown error occurred.");
+          break;
+      }
+    }
+
+    function centerOnUserLocation() {
+      if (userLatLng) {
+        campusMap.setView(userLatLng, 18);
+      } else {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function (pos) {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+            userLatLng = [lat, lng];
+            campusMap.setView(userLatLng, 18);
+            geolocationSuccess(pos);
+          }, geolocationError, {
+            enableHighAccuracy: true,
+            timeout: 10000
+          });
+        }
+      }
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function () {
+      // Populate dropdowns
+      const fromList = document.getElementById('fromList');
+      const toList = document.getElementById('toList');
+      
+      locationsList.forEach(location => {
+        const li1 = document.createElement('li');
+        li1.textContent = location;
+        fromList.appendChild(li1);
+        
+        const li2 = document.createElement('li');
+        li2.textContent = location;
+        toList.appendChild(li2);
+      });
+
+      initializeMap();
+      setupSwapButton();
+      setupGlobalClickHandler();
+
+      const currentLocBtn = document.getElementById('currentLocationBtn');
+      if (currentLocBtn) {
+        currentLocBtn.addEventListener('click', centerOnUserLocation);
+      }
+
+      const landmarkToggleBtn = document.getElementById('landmarkToggleBtn');
+      if (landmarkToggleBtn) {
+        landmarkToggleBtn.addEventListener('click', toggleLandmarks);
+      }
+      
+      console.log('Campus Navigation System initialized');
+    });
+  </script>
+</body>
+</html>
