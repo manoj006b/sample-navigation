@@ -280,6 +280,12 @@
       background-color: #c82333;
     }
 
+    /* Custom marker styles */
+    .custom-landmark-marker {
+      background: none;
+      border: none;
+    }
+
     @media screen and (max-width: 768px) {
       .head1 {
         font-size: 2rem;
@@ -419,7 +425,7 @@
     let lastResults;
     const KROUTES = 5;
 
-    // Landmarks data
+    // Landmarks data for ROUTING (used for pathfinding)
     const landmarks = [
       {"id":"front","name":"Front Gate","lat":11.034820,"lng":77.033845},
       {"id":"admiss","name":"Admission Office","lat":11.032585,"lng":77.033888},
@@ -440,6 +446,39 @@
       {"id":"gb","name":"G Block","lat":11.032609,"lng":77.034594},
       {"id":"qb","name":"Q Block","lat":11.034020,"lng":77.034499},
       {"id":"back","name":"Back Gate","lat":11.031834,"lng":77.036534}
+    ];
+
+    // Location markers data for MAP DISPLAY (used for showing markers on map)
+    const locationmarker = [
+      {"id":"front","name":"Front Gate","lat":11.034820,"lng":77.033845, "icon":"⛩️"},
+      {"id":"admiss","name":"Admission Office","lat":11.032726,"lng": 77.033547, "icon":"💼 "},
+      {"id":"lib","name":"Library","lat":11.033706,"lng":77.033437, "icon":"📚"}, 
+      {"id":"prin","name":"Principal Office","lat":11.033200,"lng":77.033947, "icon":"💼"}, 
+      {"id":"sf","name":"S F Office","lat":11.033105,"lng":77.033502, "icon":"💼"},  
+      {"id":"aided","name":"Aided Office","lat":11.033190,"lng":77.034094, "icon":"💼"},
+      {"id":"hostel","name":"Hostel Office","lat":11.032776,"lng":77.035441, "icon":"💼"}, 
+      {"id":"can1","name":"Canteen 1","lat":11.033762,"lng":77.034287, "icon":"🍽️"}, 
+      {"id":"can2","name":"Canteen 2","lat":11.031994,"lng":77.032606, "icon":"🍽️"}, 
+      {"id":"grd","name":"GRD Auditorium","lat":11.032361,"lng":77.033290, "icon":"🎭"}, 
+      {"id":"ab","name":"A Block","lat":11.033140,"lng":77.032508, "icon":"🏛️"}, 
+      {"id":"bb","name":"B Block","lat":11.033161,"lng":77.033059, "icon":"🏛️"},
+      {"id":"cb","name":"C Block","lat":11.032713,"lng":77.033874, "icon":"🏛️"}, 
+      {"id":"db","name":"D Block","lat":11.033285,"lng":77.034627, "icon":"🏛️"}, 
+      {"id":"eb","name":"E Block","lat":11.032845,"lng":77.034410, "icon":"🏛️"}, 
+      {"id":"fb","name":"F Block","lat":11.032500,"lng":77.033893, "icon":"🏛️"}, 
+      {"id":"gb","name":"G Block","lat":11.032389,"lng":77.034572, "icon":"🏛️"},  
+      {"id":"qb","name":"Q Block","lat":11.034030,"lng":77.034620, "icon":"🏛️"}, 
+      {"id":"football","name":"FootBall Ground","lat":11.031483,"lng":77.033107, "icon":"⚽"},
+      {"id":"Tennis","name":"Tennis Court","lat":11.031824,"lng":77.033979, "icon":"🏸"},   
+      {"id":"Hockey","name":"Hockey Ground","lat":11.031281,"lng":77.033974, "icon":"🏑"},
+      {"id":"Volleyball","name":"Volleyball Court","lat":11.032467,"lng":77.036240, "icon":"🏐"}, 
+     {"id":"Khokho","name":"Khokho Court","lat":11.030778,"lng":77.033976, "icon":"🏃‍♀️"}, 
+     {"id":"Basketball","name":"Basketball Court","lat":11.032139,"lng":77.036283, "icon":"🏀"}, 
+     {"id":"indoor","name":"Indoor Auditorium","lat":11.033304,"lng": 77.035299, "icon":"⛹️"}, 
+     {"id":"Parking","name":"Student Bike Parking","lat":11.034749,"lng": 77.034258, "icon":"🏍️"}, 
+     {"id":"Parking","name":"Bike Parking","lat":11.034203,"lng": 77.033518, "icon":"🅿️"},
+     {"id":"Parking","name":"Student Car Parking","lat":11.033577,"lng": 77.036263, "icon":"🚗"},  
+      {"id":"back","name":"Back Gate","lat":11.031834,"lng":77.036534, "icon":"⛩️"} 
     ];
 
     const graphData = {
@@ -527,7 +566,6 @@
         {"id": "G81", "lat": 11.033232, "lng": 77.032396},
         {"id": "G82", "lat": 11.033280, "lng": 77.034520},
         {"id": "G83", "lat": 11.033121, "lng": 77.034529}
-
       ],
       "edges": [
         ["G1","G2"],["G2","G3"],["G3","G4"],["G4","G5"],["G5","G6"],
@@ -714,6 +752,7 @@
     }
 
     function loadCampusData() {
+      // Use landmarks array for routing purposes
       places = landmarks;
       graph = JSON.parse(JSON.stringify(graphData));
       nodeIndex = new Map(graph.nodes.map((n, i) => [n.id, i]));
@@ -1118,22 +1157,38 @@
       }
     }
 
+    /**
+     * Initialize landmark markers on the map
+     * Uses locationmarker array for display coordinates (with icons)
+     * while landmarks array is used for routing
+     */
     function initializeLandmarkMarkers() {
+      // Remove existing layer if it exists
+      if (landmarkMarkersLayer) {
+        campusMap.removeLayer(landmarkMarkersLayer);
+      }
+      
       landmarkMarkersLayer = L.layerGroup().addTo(campusMap);
       
-      places.forEach(place => {
+      // Loop through locationmarker array to create visible markers with correct coordinates
+      locationmarker.forEach(place => {
         const icon = L.divIcon({
           className: 'custom-landmark-marker',
-          html: `<div style="width: 32px; height: 32px; background: #e8f0fe; border: 2px solid #1a73e8; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">📍</div>`,
-          iconSize: [32, 32],
-          iconAnchor: [16, 16],
-          popupAnchor: [0, -16]
+          html: `<div style="width: 36px; height: 36px; background: #e8f0fe; border: 2px solid #1a73e8; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); cursor: pointer;">${place.icon || '📍'}</div>`,
+          iconSize: [30, 30],
+          iconAnchor: [18, 18],
+          popupAnchor: [0, -18]
         });
         
-        L.marker([place.lat, place.lng], { icon: icon })
-          .bindPopup(`<strong>${place.name}</strong>`)
-          .addTo(landmarkMarkersLayer);
+        L.marker([place.lat, place.lng], { 
+          icon: icon,
+          title: place.name
+        })
+        .bindPopup(`<strong style="font-size: 14px;">${place.name}</strong>`)
+        .addTo(landmarkMarkersLayer);
       });
+      
+      console.log(`Initialized ${locationmarker.length} landmark markers using locationmarker coordinates`);
     }
 
     function toggleLandmarks() {
