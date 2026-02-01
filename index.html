@@ -286,6 +286,18 @@
       border: none;
     }
 
+    /* Start marker: white circle with black border */
+    .start-marker-icon {
+      background: none;
+      border: none;
+    }
+
+    /* End marker: red location pin */
+    .end-marker-icon {
+      background: none;
+      border: none;
+    }
+
     @media screen and (max-width: 768px) {
       .head1 {
         font-size: 2rem;
@@ -637,7 +649,62 @@
       'Back Gate': 'back'
     };
 
-    // UI Functions
+    // ─── Custom Icon Factories ────────────────────────────────────────────
+
+    /**
+     * START marker: white filled circle with a thick black border + shadow
+     */
+    function createStartIcon() {
+      return L.divIcon({
+        className: 'start-marker-icon',
+        html: `
+          <svg width="30" height="30" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
+            <defs>
+              <filter id="startShadow" x="-50%" y="-50%" width="200%" height="200%">
+                <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#00000066"/>
+              </filter>
+            </defs>
+            <!-- Outer black border circle -->
+            <circle cx="17" cy="17" r="14" fill="#000000" filter="url(#startShadow)"/>
+            <!-- Inner white fill -->
+            <circle cx="17" cy="17" r="9.5" fill="#ffffff"/>
+          </svg>
+        `,
+        iconSize: [30, 30],
+        iconAnchor: [17, 17],
+        popupAnchor: [0, -18]
+      });
+    }
+
+    /**
+     * END / Destination marker: classic red map-pin location icon
+     */
+    function createEndIcon() {
+      return L.divIcon({
+        className: 'end-marker-icon',
+        html: `
+          <svg width="30" height="42" viewBox="0 0 30 42" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
+            <defs>
+              <filter id="endShadow" x="-50%" y="-50%" width="200%" height="200%">
+                <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#00000066"/>
+              </filter>
+            </defs>
+            <!-- Pin body (teardrop shape) -->
+            <path d="M15 0 C6.72 0 0 6.72 0 15 C0 22.5 15 42 15 42 C15 42 30 22.5 30 15 C30 6.72 23.28 0 15 0Z" fill="#e53935" filter="url(#endShadow)"/>
+            <!-- Dark inner circle for contrast -->
+            <circle cx="15" cy="15" r="6.5" fill="#b71c1c"/>
+            <!-- Small white highlight dot -->
+            <circle cx="15" cy="15" r="3" fill="#ffffff"/>
+          </svg>
+        `,
+        iconSize: [30, 42],
+        iconAnchor: [15, 42],
+        popupAnchor: [0, -44]
+      });
+    }
+
+    // ─── UI Functions ─────────────────────────────────────────────────────
+
     function filterItems(inputId, listId) {
       const input = document.getElementById(inputId);
       const list = document.getElementById(listId);
@@ -752,7 +819,6 @@
     }
 
     function loadCampusData() {
-      // Use landmarks array for routing purposes
       places = landmarks;
       graph = JSON.parse(JSON.stringify(graphData));
       nodeIndex = new Map(graph.nodes.map((n, i) => [n.id, i]));
@@ -958,27 +1024,25 @@
       if (endMarker) { campusMap.removeLayer(endMarker); endMarker = null; }
     }
 
+    /**
+     * Places the START and END markers using the custom SVG icons.
+     * START → white circle with black border
+     * END   → red teardrop location pin
+     */
     function setStartEndMarkers(A, B) {
+      // Remove old markers first
       if (startMarker) { campusMap.removeLayer(startMarker); startMarker = null; }
-      if (endMarker) { campusMap.removeLayer(endMarker); endMarker = null; }
+      if (endMarker)   { campusMap.removeLayer(endMarker);   endMarker   = null; }
 
-      startMarker = L.circleMarker([A.lat, A.lng], {
-        radius: 8,
-        fillColor: '#1a73e8',
-        color: '#fff',
-        weight: 3,
-        opacity: 1,
-        fillOpacity: 1
-      }).addTo(campusMap).bindPopup(`<strong>Start:</strong> ${A.name}`);
+      // START: white circle with black border
+      startMarker = L.marker([A.lat, A.lng], { icon: createStartIcon(), zIndexPriority: 900 })
+        .addTo(campusMap)
+        .bindPopup(`<strong style="font-size:14px;">Start:</strong><br/>${A.name}`);
 
-      endMarker = L.circleMarker([B.lat, B.lng], {
-        radius: 8,
-        fillColor: '#ea4335',
-        color: '#fff',
-        weight: 3,
-        opacity: 1,
-        fillOpacity: 1
-      }).addTo(campusMap).bindPopup(`<strong>Destination:</strong> ${B.name}`);
+      // END: red location pin
+      endMarker = L.marker([B.lat, B.lng], { icon: createEndIcon(), zIndexPriority: 1000 })
+        .addTo(campusMap)
+        .bindPopup(`<strong style="font-size:14px;">Destination:</strong><br/>${B.name}`);
     }
 
     function renderSelectedRoute(selectedIndex) {
@@ -1033,6 +1097,22 @@
 
       layers.push(selectedBorder, primaryRoute);
       routeLayerGroup = L.layerGroup(layers).addTo(campusMap);
+
+      // Re-add start/end markers ON TOP of routes
+      if (lastResults && lastResults.length) {
+        const fromVal = document.getElementById('fromBox').value;
+        const toVal   = document.getElementById('toBox').value;
+
+        let A, B;
+        if (fromVal === 'Current Location' && userLatLng) {
+          A = { lat: userLatLng[0], lng: userLatLng[1], name: 'Your Location' };
+        } else {
+          A = getLandmarkByNameOrId(fromVal);
+        }
+        B = getLandmarkByNameOrId(toVal);
+
+        if (A && B) setStartEndMarkers(A, B);
+      }
 
       if (primaryRoute) {
         setTimeout(() => {
@@ -1157,20 +1237,13 @@
       }
     }
 
-    /**
-     * Initialize landmark markers on the map
-     * Uses locationmarker array for display coordinates (with icons)
-     * while landmarks array is used for routing
-     */
     function initializeLandmarkMarkers() {
-      // Remove existing layer if it exists
       if (landmarkMarkersLayer) {
         campusMap.removeLayer(landmarkMarkersLayer);
       }
       
       landmarkMarkersLayer = L.layerGroup().addTo(campusMap);
       
-      // Loop through locationmarker array to create visible markers with correct coordinates
       locationmarker.forEach(place => {
         const icon = L.divIcon({
           className: 'custom-landmark-marker',
@@ -1188,7 +1261,7 @@
         .addTo(landmarkMarkersLayer);
       });
       
-      console.log(`Initialized ${locationmarker.length} landmark markers using locationmarker coordinates`);
+      console.log(`Initialized ${locationmarker.length} landmark markers`);
     }
 
     function toggleLandmarks() {
@@ -1304,7 +1377,6 @@
 
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', function () {
-      // Populate dropdowns
       const fromList = document.getElementById('fromList');
       const toList = document.getElementById('toList');
       
