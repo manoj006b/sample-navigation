@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Map My Campus</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""/>
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * {
@@ -91,7 +91,8 @@
       justify-content: center;
     }
 
-    #fromBox, #toBox {
+    #fromBox,
+    #toBox {
       background-color: #041f76;
       border-radius: 10px;
       width: 80%;
@@ -104,7 +105,8 @@
       margin-bottom: 5%;
     }
 
-    #fromBox:focus, #toBox:focus {
+    #fromBox:focus,
+    #toBox:focus {
       outline: none;
       border-color: #e0e2ea;
     }
@@ -182,8 +184,13 @@
     }
 
     @keyframes rotateOnce {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(180deg); }
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(180deg);
+      }
     }
 
     .button-container {
@@ -302,7 +309,7 @@
       .head1 {
         font-size: 2rem;
       }
-      
+
       .input-row {
         display: grid;
         grid-template-columns: 1fr auto;
@@ -341,7 +348,8 @@
         margin-top: 0;
       }
 
-      #fromBox, #toBox {
+      #fromBox,
+      #toBox {
         width: 100%;
         height: 45px;
         margin-bottom: 0;
@@ -349,11 +357,12 @@
 
       .dropdown {
         width: 97%;
-        margin-top:3%;
-        height:220px;
+        margin-top: 3%;
+        height: 220px;
         font-size: 30px;
       }
-      .dropdown li{
+
+      .dropdown li {
         font-size: 21px;
       }
 
@@ -370,6 +379,7 @@
     }
   </style>
 </head>
+
 <body>
   <nav>
     <div class="nav-container">
@@ -412,18 +422,17 @@
 
   <div id="mapSection" class="map-section">
     <button id="currentLocationBtn" class="current-location-btn">
-        <i class="fas fa-location-crosshairs"></i>
+      <i class="fas fa-location-crosshairs"></i>
     </button>
     <button id="landmarkToggleBtn" class="landmark-toggle-btn">
-        <i class="fas fa-map-pin"></i>
+      <i class="fas fa-map-pin"></i>
     </button>
     <div id="mapContainer" class="map-container"></div>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""></script>
-  
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
   <script>
     // Global variables
     let campusMap;
@@ -436,7 +445,7 @@
     let routeLayerGroup = null;
     let landmarkMarkersLayer = null;
     let landmarksVisible = true;
-    
+
     let graph = { nodes: [], edges: [] };
     let nodeIndex = new Map();
     let places = [];
@@ -445,168 +454,176 @@
 
     // Landmarks data for ROUTING (used for pathfinding)
     const landmarks = [
-      {"id":"front","name":"Front Gate","lat":11.034820,"lng":77.033845},
-      {"id":"admiss","name":"Admission Office","lat":11.032585,"lng":77.033888},
-      {"id":"lib","name":"Library","lat":11.033664,"lng":77.033435},
-      {"id":"prin","name":"Principal Office","lat":11.033269,"lng":77.033861},
-      {"id":"sf","name":"S F Office","lat":11.033111,"lng":77.033410},
-      {"id":"aided","name":"Aided Office","lat":11.033277,"lng":77.034183},
-      {"id":"hostel","name":"Hostel Office","lat":11.032646,"lng":77.035449},
-      {"id":"can1","name":"Canteen 1","lat":11.033695,"lng":77.034336},
-      {"id":"can2","name":"Canteen 2","lat":11.032013,"lng":77.032709},
-      {"id":"grd","name":"GRD Auditorium","lat":11.032415,"lng":77.033340},
-      {"id":"ab","name":"A Block","lat":11.033230,"lng":77.032509},
-      {"id":"bb","name":"B Block","lat":11.033238,"lng":77.033060},
-      {"id":"cb","name":"C Block","lat":11.032585,"lng":77.033888},
-      {"id":"db","name":"D Block","lat":11.033280,"lng":77.034520},
-      {"id":"eb","name":"E Block","lat":11.032854,"lng":77.034351},
-      {"id":"fb","name":"F Block","lat":11.032585,"lng":77.033888},
-      {"id":"gb","name":"G Block","lat":11.032609,"lng":77.034594},
-      {"id":"qb","name":"Q Block","lat":11.034020,"lng":77.034499},
-      {"id":"back","name":"Back Gate","lat":11.031834,"lng":77.036534}
+      { "id": "front", "name": "Front Gate", "lat": 11.034820, "lng": 77.033845 },
+      { "id": "admiss", "name": "Admission Office", "lat": 11.032585, "lng": 77.033888 },
+      { "id": "lib", "name": "Library", "lat": 11.033664, "lng": 77.033435 },
+      { "id": "prin", "name": "Principal Office", "lat": 11.033269, "lng": 77.033861 },
+      { "id": "sf", "name": "S F Office", "lat": 11.033111, "lng": 77.033410 },
+      { "id": "aided", "name": "Aided Office", "lat": 11.033277, "lng": 77.034183 },
+      { "id": "hostel", "name": "Hostel Office", "lat": 11.032646, "lng": 77.035449 },
+      { "id": "can1", "name": "Canteen 1", "lat": 11.033695, "lng": 77.034336 },
+      { "id": "can2", "name": "Canteen 2", "lat": 11.032013, "lng": 77.032709 },
+      { "id": "grd", "name": "GRD Auditorium", "lat": 11.032415, "lng": 77.033340 },
+      { "id": "indoor", "name": "Indoor Auditorium", "lat": 11.033714, "lng": 77.035304 },
+      { "id": "ab", "name": "A Block", "lat": 11.033230, "lng": 77.032509 },
+      { "id": "bb", "name": "B Block", "lat": 11.033238, "lng": 77.033060 },
+      { "id": "cb", "name": "C Block", "lat": 11.032585, "lng": 77.033888 },
+      { "id": "db", "name": "D Block", "lat": 11.033280, "lng": 77.034520 },
+      { "id": "eb", "name": "E Block", "lat": 11.032854, "lng": 77.034351 },
+      { "id": "fb", "name": "F Block", "lat": 11.032585, "lng": 77.033888 },
+      { "id": "gb", "name": "G Block", "lat": 11.032609, "lng": 77.034594 },
+      { "id": "qb", "name": "Q Block", "lat": 11.034020, "lng": 77.034499 },
+      { "id": "book", "name": "Book Depot", "lat": 11.033405, "lng": 77.033032 },
+      { "id": "pothigai", "name": "Pothigai Hall", "lat": 11.033372, "lng": 77.033410 },
+      { "id": "bharathi", "name": "Bharathi Hostel", "lat": 11.032652, "lng": 77.035604 },
+      { "id": "nri", "name": "NRI Hostel", "lat": 11.032658, "lng": 77.035785 }, 
+      { "id": "back", "name": "Back Gate", "lat": 11.031834, "lng": 77.036534 }
     ];
 
     // Location markers data for MAP DISPLAY (used for showing markers on map)
     const locationmarker = [
-      {"id":"front","name":"Front Gate","lat":11.034820,"lng":77.033845, "icon":"⛩️"},
-      {"id":"admiss","name":"Admission Office","lat":11.032726,"lng": 77.033547, "icon":"💼 "},
-      {"id":"lib","name":"Library","lat":11.033706,"lng":77.033437, "icon":"📚"}, 
-      {"id":"prin","name":"Principal Office","lat":11.033200,"lng":77.033947, "icon":"💼"}, 
-      {"id":"sf","name":"S F Office","lat":11.033105,"lng":77.033502, "icon":"💼"},  
-      {"id":"aided","name":"Aided Office","lat":11.033190,"lng":77.034094, "icon":"💼"},
-      {"id":"hostel","name":"Hostel Office","lat":11.032776,"lng":77.035441, "icon":"💼"}, 
-      {"id":"can1","name":"Canteen 1","lat":11.033762,"lng":77.034287, "icon":"🍽️"}, 
-      {"id":"can2","name":"Canteen 2","lat":11.031994,"lng":77.032606, "icon":"🍽️"}, 
-      {"id":"grd","name":"GRD Auditorium","lat":11.032361,"lng":77.033290, "icon":"🎭"}, 
-      {"id":"ab","name":"A Block","lat":11.033140,"lng":77.032508, "icon":"🏛️"}, 
-      {"id":"bb","name":"B Block","lat":11.033161,"lng":77.033059, "icon":"🏛️"},
-      {"id":"cb","name":"C Block","lat":11.032713,"lng":77.033874, "icon":"🏛️"}, 
-      {"id":"db","name":"D Block","lat":11.033285,"lng":77.034627, "icon":"🏛️"}, 
-      {"id":"eb","name":"E Block","lat":11.032845,"lng":77.034410, "icon":"🏛️"}, 
-      {"id":"fb","name":"F Block","lat":11.032500,"lng":77.033893, "icon":"🏛️"}, 
-      {"id":"gb","name":"G Block","lat":11.032389,"lng":77.034572, "icon":"🏛️"},  
-      {"id":"qb","name":"Q Block","lat":11.034030,"lng":77.034620, "icon":"🏛️"}, 
-      {"id":"football","name":"FootBall Ground","lat":11.031483,"lng":77.033107, "icon":"⚽"},
-      {"id":"Tennis","name":"Tennis Court","lat":11.031824,"lng":77.033979, "icon":"🏸"},   
-      {"id":"Hockey","name":"Hockey Ground","lat":11.031281,"lng":77.033974, "icon":"🏑"},
-      {"id":"Volleyball","name":"Volleyball Court","lat":11.032467,"lng":77.036240, "icon":"🏐"}, 
-     {"id":"Khokho","name":"Khokho Court","lat":11.030778,"lng":77.033976, "icon":"🏃‍♀️"}, 
-     {"id":"Basketball","name":"Basketball Court","lat":11.032139,"lng":77.036283, "icon":"🏀"}, 
-     {"id":"indoor","name":"Indoor Auditorium","lat":11.033304,"lng": 77.035299, "icon":"⛹️"}, 
-     {"id":"Parking","name":"Student Bike Parking","lat":11.034749,"lng": 77.034258, "icon":"🏍️"}, 
-     {"id":"Parking","name":"Bike Parking","lat":11.034203,"lng": 77.033518, "icon":"🅿️"},
-     {"id":"Parking","name":"Student Car Parking","lat":11.033577,"lng": 77.036263, "icon":"🚗"},  
-      {"id":"back","name":"Back Gate","lat":11.031834,"lng":77.036534, "icon":"⛩️"} 
+      { "id": "front", "name": "Front Gate", "lat": 11.034820, "lng": 77.033845, "icon": "⛩️" },
+      { "id": "admiss", "name": "Admission Office", "lat": 11.032726, "lng": 77.033547, "icon": "💼 " },
+      { "id": "lib", "name": "Library", "lat": 11.033706, "lng": 77.033437, "icon": "📚" },
+      { "id": "prin", "name": "Principal Office", "lat": 11.033200, "lng": 77.033947, "icon": "💼" },
+      { "id": "sf", "name": "S F Office", "lat": 11.033105, "lng": 77.033502, "icon": "💼" },
+      { "id": "aided", "name": "Aided Office", "lat": 11.033190, "lng": 77.034094, "icon": "💼" },
+      { "id": "hostel", "name": "Hostel Office", "lat": 11.032776, "lng": 77.035441, "icon": "💼" },
+      { "id": "can1", "name": "Canteen 1", "lat": 11.033762, "lng": 77.034287, "icon": "🍽️" },
+      { "id": "can2", "name": "Canteen 2", "lat": 11.031994, "lng": 77.032606, "icon": "🍽️" },
+      { "id": "grd", "name": "GRD Auditorium", "lat": 11.032361, "lng": 77.033290, "icon": "🎭" },
+      { "id": "ab", "name": "A Block", "lat": 11.033140, "lng": 77.032508, "icon": "🏛️" },
+      { "id": "bb", "name": "B Block", "lat": 11.033161, "lng": 77.033059, "icon": "🏛️" },
+      { "id": "cb", "name": "C Block", "lat": 11.032713, "lng": 77.033874, "icon": "🏛️" },
+      { "id": "db", "name": "D Block", "lat": 11.033285, "lng": 77.034627, "icon": "🏛️" },
+      { "id": "eb", "name": "E Block", "lat": 11.032845, "lng": 77.034410, "icon": "🏛️" },
+      { "id": "fb", "name": "F Block", "lat": 11.032500, "lng": 77.033893, "icon": "🏛️" },
+      { "id": "gb", "name": "G Block", "lat": 11.032389, "lng": 77.034572, "icon": "🏛️" },
+      { "id": "qb", "name": "Q Block", "lat": 11.034030, "lng": 77.034620, "icon": "🏛️" },
+      { "id": "football", "name": "FootBall Ground", "lat": 11.031483, "lng": 77.033107, "icon": "⚽" },
+      { "id": "Tennis", "name": "Tennis Court", "lat": 11.031824, "lng": 77.033979, "icon": "🏸" },
+      { "id": "Hockey", "name": "Hockey Ground", "lat": 11.031281, "lng": 77.033974, "icon": "🏑" },
+      { "id": "Volleyball", "name": "Volleyball Court", "lat": 11.032467, "lng": 77.036240, "icon": "🏐" },
+      { "id": "Khokho", "name": "Khokho Court", "lat": 11.030778, "lng": 77.033976, "icon": "🏃‍♀️" },
+      { "id": "Basketball", "name": "Basketball Court", "lat": 11.032139, "lng": 77.036283, "icon": "🏀" },
+      { "id": "indoor", "name": "Indoor Auditorium", "lat": 11.033304, "lng": 77.035299, "icon": "⛹️" },
+      { "id": "Parking", "name": "Student Bike Parking", "lat": 11.034749, "lng": 77.034258, "icon": "🏍️" },
+      { "id": "Parking", "name": "Bike Parking", "lat": 11.034203, "lng": 77.033518, "icon": "🅿️" },
+      { "id": "Parking", "name": "Student Car Parking", "lat": 11.033577, "lng": 77.036263, "icon": "🚗" },
+      { "id": "back", "name": "Back Gate", "lat": 11.031834, "lng": 77.036534, "icon": "⛩️" }
     ];
 
     const graphData = {
       "nodes": [
-        {"id": "G1", "lat": 11.034820, "lng": 77.033845},
-        {"id": "G2", "lat": 11.034563, "lng": 77.033848},
-        {"id": "G3", "lat": 11.034275, "lng": 77.033855},
-        {"id": "G4", "lat": 11.034303, "lng": 77.034100},
-        {"id": "G5", "lat": 11.034320, "lng": 77.034371},
-        {"id": "G6", "lat": 11.034343, "lng": 77.034768},
-        {"id": "G7", "lat": 11.034369, "lng": 77.035226},
-        {"id": "G8", "lat": 11.034391, "lng": 77.035535},
-        {"id": "G9", "lat": 11.033964, "lng": 77.035553},
-        {"id": "G10", "lat": 11.034000, "lng": 77.035806},
-        {"id": "G11", "lat": 11.034019, "lng": 77.035980},
-        {"id": "G12", "lat": 11.034009, "lng": 77.036093},
-        {"id": "G13", "lat": 11.033956, "lng": 77.036219},
-        {"id": "G14", "lat": 11.033834, "lng": 77.036351},
-        {"id": "G15", "lat": 11.033289, "lng": 77.036422},
-        {"id": "G16", "lat": 11.032674, "lng": 77.036463},
-        {"id": "G17", "lat": 11.032278, "lng": 77.036498},
-        {"id": "G18", "lat": 11.031834, "lng": 77.036534},
-        {"id": "G19", "lat": 11.034009, "lng": 77.033856},
-        {"id": "G20", "lat": 11.033670, "lng": 77.033854},
-        {"id": "G21", "lat": 11.033666, "lng": 77.033679},
-        {"id": "G22", "lat": 11.033664, "lng": 77.033435},
-        {"id": "G23", "lat": 11.033651, "lng": 77.033413},
-        {"id": "G24", "lat": 11.033482, "lng": 77.033410},
-        {"id": "G25", "lat": 11.033245, "lng": 77.033413},
-        {"id": "G26", "lat": 11.033238, "lng": 77.033060},
-        {"id": "G27", "lat": 11.033240, "lng": 77.032791},
-        {"id": "G28", "lat": 11.033230, "lng": 77.032509},
-        {"id": "G29", "lat": 11.033111, "lng": 77.033410},
-        {"id": "G30", "lat": 11.032566, "lng": 77.033426},
-        {"id": "G31", "lat": 11.032410, "lng": 77.033432},
-        {"id": "G32", "lat": 11.032415, "lng": 77.033340},
-        {"id": "G33", "lat": 11.032410, "lng": 77.033218},
-        {"id": "G34", "lat": 11.032413, "lng": 77.032941},
-        {"id": "G35", "lat": 11.032558, "lng": 77.033215},
-        {"id": "G36", "lat": 11.032550, "lng": 77.032936},
-        {"id": "G37", "lat": 11.032545, "lng": 77.032686},
-        {"id": "G38", "lat": 11.032397, "lng": 77.032700},
-        {"id": "G39", "lat": 11.032179, "lng": 77.032700},
-        {"id": "G40", "lat": 11.032013, "lng": 77.032709},
-        {"id": "G41", "lat": 11.033400, "lng": 77.033864},
-        {"id": "G42", "lat": 11.033266, "lng": 77.033756},
-        {"id": "G43", "lat": 11.033269, "lng": 77.033861},
-        {"id": "G44", "lat": 11.033270, "lng": 77.033949},
-        {"id": "G45", "lat": 11.033277, "lng": 77.034183},
-        {"id": "G46", "lat": 11.033274, "lng": 77.034335},
-        {"id": "G47", "lat": 11.033687, "lng": 77.034317},
-        {"id": "G48", "lat": 11.033690, "lng": 77.034505},
-        {"id": "G49", "lat": 11.034020, "lng": 77.034499},
-        {"id": "G50", "lat": 11.034161, "lng": 77.034480},
-        {"id": "G51", "lat": 11.034203, "lng": 77.034380},
-        {"id": "G52", "lat": 11.033114, "lng": 77.034342},
-        {"id": "G53", "lat": 11.032854, "lng": 77.034351},
-        {"id": "G54", "lat": 11.032605, "lng": 77.034346},
-        {"id": "G55", "lat": 11.032585, "lng": 77.033888},
-        {"id": "G56", "lat": 11.032609, "lng": 77.034594},
-        {"id": "G57", "lat": 11.032630, "lng": 77.035112},
-        {"id": "G58", "lat": 11.033135, "lng": 77.035095},
-        {"id": "G59", "lat": 11.033130, "lng": 77.034715},
-        {"id": "G60", "lat": 11.033706, "lng": 77.035081},
-        {"id": "G61", "lat": 11.033711, "lng": 77.035527},
-        {"id": "G62", "lat": 11.033743, "lng": 77.035548},
-        {"id": "G63", "lat": 11.032657, "lng": 77.035551},
-        {"id": "G64", "lat": 11.032646, "lng": 77.035449},
-        {"id": "G65", "lat": 11.032634, "lng": 77.035259},
-        {"id": "G66", "lat": 11.032652, "lng": 77.035604},
-        {"id": "G67", "lat": 11.032658, "lng": 77.035875},
-        {"id": "G68", "lat": 11.032665, "lng": 77.036175},
-        {"id": "G69", "lat": 11.032188, "lng": 77.035270},
-        {"id": "G70", "lat": 11.031744, "lng": 77.035278},
-        {"id": "G71", "lat": 11.031262, "lng": 77.035285},
-        {"id": "G72", "lat": 11.030725, "lng": 77.035295},
-        {"id": "G73", "lat": 11.032163, "lng": 77.034363},
-        {"id": "G74", "lat": 11.032160, "lng": 77.033896},
-        {"id": "G75", "lat": 11.032140, "lng": 77.033440},
-        {"id": "G76", "lat": 11.032534, "lng": 77.032396},
-        {"id": "G77", "lat": 11.032587, "lng": 77.032278},
-        {"id": "G78", "lat": 11.032690, "lng": 77.032223},
-        {"id": "G79", "lat": 11.033037, "lng": 77.032115},
-        {"id": "G80", "lat": 11.033182, "lng": 77.032198},
-        {"id": "G81", "lat": 11.033232, "lng": 77.032396},
-        {"id": "G82", "lat": 11.033280, "lng": 77.034520},
-        {"id": "G83", "lat": 11.033121, "lng": 77.034529}
+        { "id": "G1", "lat": 11.034820, "lng": 77.033845 },
+        { "id": "G2", "lat": 11.034563, "lng": 77.033848 },
+        { "id": "G3", "lat": 11.034280, "lng": 77.033855 },
+        { "id": "G4", "lat": 11.034310, "lng": 77.034100 },
+        { "id": "G5", "lat": 11.034325, "lng": 77.034371 },
+        { "id": "G6", "lat": 11.034343, "lng": 77.034768 },
+        { "id": "G7", "lat": 11.034369, "lng": 77.035226 },
+        { "id": "G8", "lat": 11.034391, "lng": 77.035535 },
+        { "id": "G9", "lat": 11.033964, "lng": 77.035553 },
+        { "id": "G10", "lat": 11.034000, "lng": 77.035806 },
+        { "id": "G11", "lat": 11.034019, "lng": 77.035980 },
+        { "id": "G12", "lat": 11.034009, "lng": 77.036093 },
+        { "id": "G13", "lat": 11.033956, "lng": 77.036219 },
+        { "id": "G14", "lat": 11.033834, "lng": 77.036351 },
+        { "id": "G15", "lat": 11.033289, "lng": 77.036422 },
+        { "id": "G16", "lat": 11.032674, "lng": 77.036463 },
+        { "id": "G17", "lat": 11.032278, "lng": 77.036498 },
+        { "id": "G18", "lat": 11.031834, "lng": 77.036534 },
+        { "id": "G19", "lat": 11.034009, "lng": 77.033856 },  
+        { "id": "G20", "lat": 11.033670, "lng": 77.033854 },
+        { "id": "G21", "lat": 11.033666, "lng": 77.033679 },
+        { "id": "G22", "lat": 11.033664, "lng": 77.033435 },
+        { "id": "G23", "lat": 11.033630, "lng": 77.033403 },
+        { "id": "G24", "lat": 11.033372, "lng": 77.033410 },
+        { "id": "G25", "lat": 11.033250, "lng": 77.033413 },
+        { "id": "G26", "lat": 11.033248, "lng": 77.033060 },
+        { "id": "G27", "lat": 11.033240, "lng": 77.032791 },
+        { "id": "G28", "lat": 11.033230, "lng": 77.032509 },
+        { "id": "G29", "lat": 11.033111, "lng": 77.033410 },
+        { "id": "G30", "lat": 11.032566, "lng": 77.033426 },
+        { "id": "G31", "lat": 11.032410, "lng": 77.033432 },
+        { "id": "G32", "lat": 11.032415, "lng": 77.033340 },
+        { "id": "G33", "lat": 11.032410, "lng": 77.033218 },
+        { "id": "G34", "lat": 11.032413, "lng": 77.032941 },
+        { "id": "G35", "lat": 11.032558, "lng": 77.033215 },
+        { "id": "G36", "lat": 11.032550, "lng": 77.032936 },
+        { "id": "G37", "lat": 11.032545, "lng": 77.032686 },
+        { "id": "G38", "lat": 11.032397, "lng": 77.032700 },
+        { "id": "G39", "lat": 11.032179, "lng": 77.032700 },
+        { "id": "G40", "lat": 11.032013, "lng": 77.032709 },
+        { "id": "G41", "lat": 11.033400, "lng": 77.033864 },
+        { "id": "G42", "lat": 11.033266, "lng": 77.033756 },
+        { "id": "G43", "lat": 11.033269, "lng": 77.033861 },
+        { "id": "G44", "lat": 11.033270, "lng": 77.033949 },
+        { "id": "G45", "lat": 11.033277, "lng": 77.034183 },
+        { "id": "G46", "lat": 11.033274, "lng": 77.034335 },
+        { "id": "G47", "lat": 11.033687, "lng": 77.034317 },
+        { "id": "G48", "lat": 11.033690, "lng": 77.034505 },
+        { "id": "G49", "lat": 11.034020, "lng": 77.034499 },
+        { "id": "G50", "lat": 11.034161, "lng": 77.034480 },
+        { "id": "G51", "lat": 11.034203, "lng": 77.034380 },
+        { "id": "G52", "lat": 11.033114, "lng": 77.034342 },
+        { "id": "G53", "lat": 11.032854, "lng": 77.034345 },
+        { "id": "G54", "lat": 11.032605, "lng": 77.034346 },
+        { "id": "G55", "lat": 11.032585, "lng": 77.033888 },
+        { "id": "G56", "lat": 11.032609, "lng": 77.034594 },
+        { "id": "G57", "lat": 11.032630, "lng": 77.035112 },
+        { "id": "G58", "lat": 11.033135, "lng": 77.035095 },
+        { "id": "G59", "lat": 11.033130, "lng": 77.034715 },
+        { "id": "G60", "lat": 11.033706, "lng": 77.035081 },
+        { "id": "G61", "lat": 11.033711, "lng": 77.035527 },
+        { "id": "G62", "lat": 11.033743, "lng": 77.035548 },
+        { "id": "G63", "lat": 11.032650, "lng": 77.035551 },
+        { "id": "G64", "lat": 11.032646, "lng": 77.035449 },
+        { "id": "G65", "lat": 11.032638, "lng": 77.035259 },
+        { "id": "G66", "lat": 11.032652, "lng": 77.035604 },
+        { "id": "G67", "lat": 11.032658, "lng": 77.035785 },
+        { "id": "G68", "lat": 11.032665, "lng": 77.036175 },
+        { "id": "G69", "lat": 11.032188, "lng": 77.035270 },
+        { "id": "G70", "lat": 11.031744, "lng": 77.035278 },
+        { "id": "G71", "lat": 11.031262, "lng": 77.035285 },
+        { "id": "G72", "lat": 11.030725, "lng": 77.035295 },
+        { "id": "G73", "lat": 11.032163, "lng": 77.034363 },
+        { "id": "G74", "lat": 11.032160, "lng": 77.033896 },
+        { "id": "G75", "lat": 11.032140, "lng": 77.033440 },
+        { "id": "G76", "lat": 11.032534, "lng": 77.032396 },
+        { "id": "G77", "lat": 11.032587, "lng": 77.032278 },
+        { "id": "G78", "lat": 11.032690, "lng": 77.032223 },
+        { "id": "G79", "lat": 11.033037, "lng": 77.032115 },
+        { "id": "G80", "lat": 11.033182, "lng": 77.032198 },
+        { "id": "G81", "lat": 11.033232, "lng": 77.032396 },
+        { "id": "G82", "lat": 11.033280, "lng": 77.034520 },
+        { "id": "G83", "lat": 11.033245, "lng": 77.033032 },
+        { "id": "G84", "lat": 11.033405, "lng": 77.033032 },
+        { "id": "G85", "lat": 11.033714, "lng": 77.035304 }
       ],
       "edges": [
-        ["G1","G2"],["G2","G3"],["G3","G4"],["G4","G5"],["G5","G6"],
-        ["G6","G7"],["G7","G8"],["G8","G9"],["G9","G10"],["G10","G11"],
-        ["G11","G12"],["G12","G13"],["G13","G14"],["G14","G15"],["G15","G16"],
-        ["G16","G17"],["G17","G18"],["G9","G62"],["G62","G61"],["G61","G63"],
-        ["G63","G66"],["G66","G67"],["G67","G68"],["G68","G16"],["G5","G51"],
-        ["G51","G50"],["G50","G49"],["G49","G48"],["G48","G60"],["G60","G61"],
-        ["G60","G58"],["G58","G57"],["G57","G65"],["G65","G64"],["G64","G63"],
-        ["G57","G56"],["G56","G54"],["G3","G19"],["G19","G20"],["G20","G47"],
-        ["G47","G46"],["G47","G48"],["G46","G52"],["G52","G59"],["G46","G82"],["G82","G83"],["G83","G52"],
-        ["G59","G58"],["G52","G53"],["G53","G54"],["G20","G41"],["G41","G44"],
-        ["G44","G45"],["G45","G46"],["G44","G43"],["G41","G42"],["G42","G43"],
-        ["G42","G25"],["G20","G21"],["G21","G22"],["G22","G23"],["G23","G24"],
-        ["G24","G25"],["G25","G29"],["G29","G30"],["G30","G31"],["G31","G32"],
-        ["G30","G55"],["G54","G55"],["G32","G33"],["G30","G35"],["G35","G33"],
-        ["G35","G36"],["G36","G37"],["G33","G34"],["G36","G34"],["G36","G57"],
-        ["G34","G38"],
-        ["G37","G38"],["G38","G39"],["G39","G40"],["G25","G26"],["G26","G27"],
-        ["G27","G28"],["G28","G81"],["G81","G80"],["G80","G79"],["G79","G78"],
-        ["G78","G77"],["G77","G76"],["G76","G37"],["G31","G75"],["G54","G73"],
-        ["G73","G74"],["G74","G75"],["G55","G74"],["G65","G69"],["G69","G70"],
-        ["G70","G71"],["G71","G72"]
+        ["G1", "G2"], ["G2", "G3"], ["G3", "G4"], ["G4", "G5"], ["G5", "G6"],
+        ["G6", "G7"], ["G7", "G8"], ["G8", "G9"], ["G9", "G10"], ["G10", "G11"],
+        ["G11", "G12"], ["G12", "G13"], ["G13", "G14"], ["G14", "G15"], ["G15", "G16"],
+        ["G16", "G17"], ["G17", "G18"], ["G9", "G62"], ["G62", "G61"], ["G61", "G63"],
+        ["G63", "G66"], ["G66", "G67"], ["G67", "G68"], ["G68", "G16"], ["G5", "G51"],
+        ["G51", "G50"], ["G50", "G49"], ["G49", "G48"], ["G48", "G60"],
+        ["G60", "G58"], ["G58", "G57"], ["G57", "G65"], ["G65", "G64"], ["G64", "G63"],
+        ["G57", "G56"], ["G56", "G54"], ["G3", "G19"], ["G19", "G20"], ["G20", "G47"],
+        ["G47", "G46"], ["G47", "G48"], ["G46", "G52"], ["G52", "G59"], ["G46", "G82"],
+        ["G59", "G58"], ["G52", "G53"], ["G53", "G54"], ["G20", "G41"], ["G41", "G44"],
+        ["G44", "G45"], ["G45", "G46"], ["G44", "G43"], ["G41", "G42"], ["G42", "G43"],
+        ["G42", "G25"], ["G20", "G21"], ["G21", "G22"], ["G22", "G23"], ["G23", "G24"],
+        ["G24", "G25"], ["G25", "G29"], ["G29", "G30"], ["G30", "G31"], ["G31", "G32"],
+        ["G30", "G55"], ["G54", "G55"], ["G32", "G33"], ["G30", "G35"], ["G35", "G33"],
+        ["G35", "G36"], ["G36", "G37"], ["G33", "G34"], ["G36", "G34"], ["G36", "G57"],
+        ["G34", "G38"],
+        ["G37", "G38"], ["G38", "G39"], ["G39", "G40"], ["G25", "G26"], ["G26", "G27"],
+        ["G27", "G28"], ["G28", "G81"], ["G81", "G80"], ["G80", "G79"], ["G79", "G78"],
+        ["G78", "G77"], ["G77", "G76"], ["G76", "G37"], ["G31", "G75"], ["G54", "G73"],
+        ["G73", "G74"], ["G74", "G75"], ["G55", "G74"], ["G65", "G69"], ["G69", "G70"],
+        ["G70", "G71"], ["G71", "G72"], ["G26", "G83"], ["G84", "G83"], ["G60", "G85"], 
+        ["G61", "G85"]
       ]
     };
 
@@ -622,6 +639,7 @@
       'Canteen 1',
       'Canteen 2',
       'GRD Auditorium',
+      'Indoor Auditorium',
       'A Block',
       'B Block',
       'C Block',
@@ -630,6 +648,10 @@
       'F Block',
       'G Block',
       'Q Block',
+      'Book Depot',
+      'Pothigai Hall',
+      'Bharathi Hostel',
+      'NRI Hostel',
       'Back Gate'
     ];
 
@@ -644,6 +666,7 @@
       'Canteen 1': 'can1',
       'Canteen 2': 'can2',
       'GRD Auditorium': 'grd',
+      'Indoor Auditorium': 'indoor',
       'A Block': 'ab',
       'B Block': 'bb',
       'C Block': 'cb',
@@ -652,6 +675,10 @@
       'F Block': 'fb',
       'G Block': 'gb',
       'Q Block': 'qb',
+      'Book Depot': 'book',
+      'Pothigai Hall': 'pothigai',
+      'Bharathi Hostel':'bharathi',
+      'NRI Hostel':'nri',
       'Back Gate': 'back'
     };
 
@@ -671,9 +698,9 @@
               </filter>
             </defs>
             <!-- Outer black border circle -->
-            <circle cx="17" cy="17" r="14" fill="#000000" filter="url(#startShadow)"/>
+            <circle cx="15" cy="15" r="14" fill="#000000" filter="url(#startShadow)"/>
             <!-- Inner white fill -->
-            <circle cx="17" cy="17" r="9.5" fill="#ffffff"/>
+            <circle cx="15" cy="15" r="9.5" fill="#ffffff"/>
           </svg>
         `,
         iconSize: [30, 30],
@@ -689,7 +716,7 @@
       return L.divIcon({
         className: 'end-marker-icon',
         html: `
-          <svg width="30" height="42" viewBox="0 0 30 42" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
+          <svg width="25" height="32" viewBox="0 0 20 36" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">
             <defs>
               <filter id="endShadow" x="-50%" y="-50%" width="200%" height="200%">
                 <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#00000066"/>
@@ -709,8 +736,7 @@
       });
     }
 
-    // ─── UI Functions ─────────────────────────────────────────────────────
-
+    // ─── UI Functions 
     function filterItems(inputId, listId) {
       const input = document.getElementById(inputId);
       const list = document.getElementById(listId);
@@ -820,7 +846,7 @@
 
       loadCampusData();
       initializeLandmarkMarkers();
-      
+
       console.log('Map initialized successfully');
     }
 
@@ -861,14 +887,14 @@
         const entId = `ENT_${p.id}`;
         const entNode = { id: entId, lat: p.lat, lng: p.lng };
         graph.nodes.push(entNode);
-        
+
         let bestDist = Infinity, bestNodeId = null, bestEdge = null, bestPointOnEdge = null;
-        
+
         for (let i = 0; i < graph.nodes.length - 1; i++) {
           const d = hav(p, graph.nodes[i]);
           if (d < bestDist) { bestDist = d; bestNodeId = graph.nodes[i].id; bestEdge = null; }
         }
-        
+
         for (const [aId, bId] of graph.edges) {
           const aIdx = graph.nodes.findIndex(n => n.id === aId);
           const bIdx = graph.nodes.findIndex(n => n.id === bId);
@@ -878,15 +904,15 @@
           const d = hav(p, nearestPoint);
           if (d < bestDist) { bestDist = d; bestEdge = [aId, bId]; bestPointOnEdge = nearestPoint; bestNodeId = null; }
         }
-        
+
         if (bestEdge && bestPointOnEdge) {
           const splitNodeId = `SPLIT_${p.id}`;
           const splitNode = { id: splitNodeId, lat: bestPointOnEdge.lat, lng: bestPointOnEdge.lng };
           graph.nodes.push(splitNode);
-          
+
           const edgeIndex = graph.edges.findIndex(e => (e[0] === bestEdge[0] && e[1] === bestEdge[1]) || (e[0] === bestEdge[1] && e[1] === bestEdge[0]));
           if (edgeIndex !== -1) graph.edges.splice(edgeIndex, 1);
-          
+
           graph.edges.push([bestEdge[0], splitNodeId]);
           graph.edges.push([splitNodeId, bestEdge[1]]);
           graph.edges.push([splitNodeId, entId]);
@@ -894,7 +920,7 @@
           graph.edges.push([bestNodeId, entId]);
         }
       });
-      
+
       nodeIndex = new Map(graph.nodes.map((n, i) => [n.id, i]));
     }
 
@@ -922,7 +948,7 @@
       const used = Array(n).fill(false);
       dist[src] = 0;
       const pq = [{ d: 0, i: src }];
-      
+
       const pop = () => {
         if (!pq.length) return null;
         let bi = -1, bd = Infinity;
@@ -947,7 +973,7 @@
           }
         }
       }
-      
+
       const path = [];
       let u = dst;
       if (prev[u] === -1 && u !== src) return { path: [], distance: Infinity };
@@ -985,7 +1011,7 @@
           const rootPath = prevPath.slice(0, iSeg + 1);
           const removedEdges = new Set();
           const removedNodes = new Set();
-          
+
           for (const p of A) {
             const candidateRoot = p.path.slice(0, iSeg + 1);
             if (arraysEqual(candidateRoot, rootPath) && p.path.length > iSeg + 1) {
@@ -994,11 +1020,11 @@
               removedEdges.add(`${v}-${u}`);
             }
           }
-          
+
           for (const rpNode of rootPath.slice(0, -1)) { removedNodes.add(rpNode); }
           const adj = buildAdj(removedEdges, removedNodes);
           const spurRes = dijkstra(adj, spurNode, t);
-          
+
           if (spurRes.path.length && isFinite(spurRes.distance)) {
             const totalPath = rootPath.slice(0, -1).concat(spurRes.path);
             const totalDist = pathDistance(totalPath);
@@ -1007,12 +1033,12 @@
             }
           }
         }
-        
+
         if (!B.length) break;
         B.sort((a, b) => a.distance - b.distance);
         const best = B.shift();
         A.push(best);
-        
+
         const uniq = [];
         for (const p of A) if (!uniq.some(q => arraysEqual(q.path, p.path))) uniq.push(p);
         uniq.sort((a, b) => a.distance - b.distance);
@@ -1038,7 +1064,7 @@
     function setStartEndMarkers(A, B) {
       // Remove old markers first
       if (startMarker) { campusMap.removeLayer(startMarker); startMarker = null; }
-      if (endMarker)   { campusMap.removeLayer(endMarker);   endMarker   = null; }
+      if (endMarker) { campusMap.removeLayer(endMarker); endMarker = null; }
 
       // START: white circle with black border
       startMarker = L.marker([A.lat, A.lng], { icon: createStartIcon(), zIndexPriority: 900 })
@@ -1072,7 +1098,7 @@
           });
           const alt = L.polyline(latlngs, {
             color: '#8ab4f8',
-            weight: 4,
+            weight: 5.5,
             opacity: 0.7,
             lineCap: 'round',
             lineJoin: 'round',
@@ -1086,7 +1112,7 @@
       const selectedLatlngs = results[selectedIndex].path.map(i => [graph.nodes[i].lat, graph.nodes[i].lng]);
       const selectedBorder = L.polyline(selectedLatlngs, {
         color: '#ffffff',
-        weight: 9,
+        weight: 10,
         opacity: 0.9,
         lineCap: 'round',
         lineJoin: 'round',
@@ -1094,7 +1120,7 @@
       });
       const primaryRoute = L.polyline(selectedLatlngs, {
         color: '#1967d2',
-        weight: 5,
+        weight: 6,
         opacity: 1,
         lineCap: 'round',
         lineJoin: 'round',
@@ -1107,7 +1133,7 @@
       // Re-add start/end markers ON TOP of routes
       if (lastResults && lastResults.length) {
         const fromVal = document.getElementById('fromBox').value;
-        const toVal   = document.getElementById('toBox').value;
+        const toVal = document.getElementById('toBox').value;
 
         let A, B;
         if (fromVal === 'Current Location' && userLatLng) {
@@ -1161,27 +1187,27 @@
         if (!userLatLng) {
           alert('Waiting for your location... Please allow location access.');
           navigator.geolocation.getCurrentPosition(
-            function(pos) {
+            function (pos) {
               userLatLng = [pos.coords.latitude, pos.coords.longitude];
               searchRoute();
             },
-            function(err) {
+            function (err) {
               alert('Could not get your current location. Please select a location from the list.');
             }
           );
           return;
         }
-        
+
         const B = getLandmarkByNameOrId(toLocation);
         if (!B) {
           alert('Invalid destination selected');
           return;
         }
-        
+
         const userPos = { lat: userLatLng[0], lng: userLatLng[1] };
         let nearestNodeId = null;
         let minDistance = Infinity;
-        
+
         graph.nodes.forEach((node, index) => {
           const distance = hav(userPos, node);
           if (distance < minDistance) {
@@ -1189,54 +1215,54 @@
             nearestNodeId = index;
           }
         });
-        
+
         if (nearestNodeId === null) {
           alert('Could not connect your location to the campus network');
           return;
         }
-        
+
         const destNodeId = nodeIndex.get(`ENT_${B.id}`);
         if (destNodeId === undefined) {
           alert('Cannot find destination entrance node');
           return;
         }
-        
+
         const results = yensKShortests(nearestNodeId, destNodeId, KROUTES);
-        if (!results.length) { 
-          alert('No path found from your current location.'); 
-          return; 
+        if (!results.length) {
+          alert('No path found from your current location.');
+          return;
         }
-        
+
         lastResults = results;
         setStartEndMarkers(
-          {lat: userLatLng[0], lng: userLatLng[1], name: 'Your Location'}, 
+          { lat: userLatLng[0], lng: userLatLng[1], name: 'Your Location' },
           B
         );
         renderSelectedRoute(0);
-        
+
       } else {
         const A = getLandmarkByNameOrId(fromLocation);
         const B = getLandmarkByNameOrId(toLocation);
-        
+
         if (!A || !B) {
           alert('Invalid location selected');
           return;
         }
-        
+
         const si = nodeIndex.get(`ENT_${A.id}`);
         const ti = nodeIndex.get(`ENT_${B.id}`);
-        
+
         if (si === undefined || ti === undefined) {
           alert('Cannot find entrance nodes for selected locations.');
           return;
         }
-        
+
         const results = yensKShortests(si, ti, KROUTES);
-        if (!results.length) { 
-          alert('No path found between these locations.'); 
-          return; 
+        if (!results.length) {
+          alert('No path found between these locations.');
+          return;
         }
-        
+
         lastResults = results;
         setStartEndMarkers(A, B);
         renderSelectedRoute(0);
@@ -1247,34 +1273,34 @@
       if (landmarkMarkersLayer) {
         campusMap.removeLayer(landmarkMarkersLayer);
       }
-      
+
       landmarkMarkersLayer = L.layerGroup().addTo(campusMap);
-      
+
       locationmarker.forEach(place => {
         const icon = L.divIcon({
           className: 'custom-landmark-marker',
-          html: `<div style="width: 36px; height: 36px; background: #e8f0fe; border: 2px solid #1a73e8; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); cursor: pointer;">${place.icon || '📍'}</div>`,
+          html: `<div style="width: 30px; height: 30px; background: #e8f0fe; border: 2px solid #1a73e8; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.3); cursor: pointer;">${place.icon || '📍'}</div>`,
           iconSize: [30, 30],
           iconAnchor: [18, 18],
           popupAnchor: [0, -18]
         });
-        
-        L.marker([place.lat, place.lng], { 
+
+        L.marker([place.lat, place.lng], {
           icon: icon,
           title: place.name
         })
-        .bindPopup(`<strong style="font-size: 14px;">${place.name}</strong>`)
-        .addTo(landmarkMarkersLayer);
+          .bindPopup(`<strong style="font-size: 14px;">${place.name}</strong>`)
+          .addTo(landmarkMarkersLayer);
       });
-      
+
       console.log(`Initialized ${locationmarker.length} landmark markers`);
     }
 
     function toggleLandmarks() {
       if (!landmarkMarkersLayer) return;
-      
+
       const toggleBtn = document.getElementById('landmarkToggleBtn');
-      
+
       if (landmarksVisible) {
         campusMap.removeLayer(landmarkMarkersLayer);
         landmarksVisible = false;
@@ -1385,12 +1411,12 @@
     document.addEventListener('DOMContentLoaded', function () {
       const fromList = document.getElementById('fromList');
       const toList = document.getElementById('toList');
-      
+
       locationsList.forEach(location => {
         const li1 = document.createElement('li');
         li1.textContent = location;
         fromList.appendChild(li1);
-        
+
         const li2 = document.createElement('li');
         li2.textContent = location;
         toList.appendChild(li2);
@@ -1409,9 +1435,10 @@
       if (landmarkToggleBtn) {
         landmarkToggleBtn.addEventListener('click', toggleLandmarks);
       }
-      
+
       console.log('Campus Navigation System initialized');
     });
   </script>
 </body>
+
 </html>
