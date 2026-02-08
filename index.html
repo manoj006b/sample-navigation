@@ -334,10 +334,14 @@
       background: none;
       border: none;
     }
-
+ /* mobile responsive */
     @media screen and (max-width: 768px) {
       .head1 {
         font-size: 2rem;
+      }
+
+      .input-section {
+        position: relative;
       }
 
       .input-row {
@@ -346,8 +350,9 @@
         grid-template-rows: auto auto;
         gap: 10px 15px;
         align-items: start;
-        max-width: 500px;
+        max-width: 340px;
         margin: 0 auto 15px;
+        margin-left: -2%;
       }
 
       .swap-container {
@@ -358,6 +363,11 @@
         width: 60px;
         display: flex;
         justify-content: center;
+        margin-top: -53%;
+      }
+
+      .swapbox {
+        width: 45px;
       }
 
       .input-wrapper {
@@ -397,27 +407,34 @@
       }
 
       .input-label {
-        font-size: 1.2rem;
-        width: 100%;
+        display: none;
+      }
+
+      .button-container {
+        position: absolute;
+        top:40%;
+        right: -2%;
+        display: block;
+        flex-direction: column;
+        gap: 8px;
+        margin: 0;
+        margin-top:7%;
       }
 
       button {
-        width: 120px;
+        width: 40px;
         height: 40px;
-        font-size: 1rem;
+        margin: 0;
+        border-radius: 12px;
       }
 
-      .nav-info-panel {
-        min-width: 220px;
-        padding: 12px 20px;
+      .search-text {
+        display: none;
       }
 
-      .nav-info-distance {
+      .search-icon {
+        display: inline;
         font-size: 20px;
-      }
-
-      .nav-info-time {
-        font-size: 14px;
       }
     }
   </style>
@@ -456,18 +473,20 @@
         </div>
 
         <div class="button-container">
-          <button id="but1" onclick="searchRoute()">Search</button>
-          <button id="but2" onclick="clearRoute()">Clear</button>
+          <button id="but1" onclick="searchRoute()">
+            <span class="search-text">Search</span>
+            <span class="search-icon">❯❯</span>
+          </button>
+          <button id="but2" onclick="clearRoute()">
+            <span class="search-text">Clear</span>
+            <span class="search-icon">❌</span>
+          </button>
         </div>
       </div>
     </div>
   </nav>
 
   <div id="mapSection" class="map-section">
-    <div class="nav-info-panel" id="navInfoPanel">
-      <div class="nav-info-distance" id="navDistance">--</div>
-      <div class="nav-info-time" id="navTime">--</div>
-    </div>
     <button id="currentLocationBtn" class="current-location-btn">
       <i class="fas fa-location-crosshairs"></i>
     </button>
@@ -494,24 +513,15 @@
     let landmarksVisible = true;
     let animationFrameId = null;
 
-    // Navigation tracking variables
-    let isNavigating = false;
-    let currentDestination = null;
-    let fullRoutePath = [];
-    let currentPathIndices = [];
-    let lastUpdateTime = 0;
-    const UPDATE_THRESHOLD = 2000; // Update every 2 seconds
-
     let graph = { nodes: [], edges: [] };
     let nodeIndex = new Map();
     let places = [];
     let lastResults;
     const KROUTES = 5;
-    const PROXIMITY_THRESHOLD = 15; // meters - when to remove a waypoint from path
 
     // Landmarks data for ROUTING (used for pathfinding)
     const landmarks = [
-      { "id": "front", "name": "Front Gate", "lat": 11.034820, "lng": 77.033845 },
+      { "id": "front", "name": "Front Gate", "lat": 11.034770, "lng": 77.033850 },
       { "id": "admiss", "name": "Admission Office", "lat": 11.032585, "lng": 77.033888 },
       { "id": "lib", "name": "Library", "lat": 11.033664, "lng": 77.033435 },
       { "id": "prin", "name": "Principal Office", "lat": 11.033269, "lng": 77.033861 },
