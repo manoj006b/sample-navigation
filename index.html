@@ -23,210 +23,468 @@
             height: 100vh;
         }
 
-        nav {
-            background-color: rgb(158, 5, 228);
-            width: 100%;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        .nav-container {
-            width: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .title-container {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .head1 {
-            font-size: 3rem;
-            font-family: Georgia, 'Times New Roman', Times, serif;
-            color: white;
-            margin-bottom: 20px;
-        }
-
-        .input-section {
-            width: 100%;
-        }
-
-        .input-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 20px;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .input-wrapper {
-            flex: 1;
-            min-width: 300px;
-            max-width: 400px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .input-label {
-            color: #04279a;
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 8px;
-            display: block;
-            width: 80%;
-            text-align: left;
-        }
-
-        .input-area {
-            position: relative;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
-
-        #fromBox,
-        #toBox {
-            background-color: #041f76;
-            border-radius: 10px;
-            width: 80%;
-            height: 50px;
-            padding: 0 15px;
-            font-size: 1.1rem;
-            border: 2px solid rgb(5, 5, 79);
-            color: white;
-            transition: border-color 0.3s;
-            margin-bottom: 5%;
-        }
-
-        #fromBox:focus,
-        #toBox:focus {
-            outline: none;
-            border-color: #e0e2ea;
-        }
-
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .dropdown {
-            margin-top: -3%;
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 78%;
-            max-height: 275px;
-            overflow-y: auto;
-            background-color: white;
-            border: 1px solid #597ae8;
-            border-top: none;
-            border-radius: 0 0 10px 10px;
-            list-style-type: none;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(89, 87, 87, 0.1);
-        }
-
-        .dropdown li {
-            padding: 10px 12px;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-            font-size: 1.4rem;
-            text-align: center;
-            transition: all 0.2s;
-            font-family: 'Times New Roman', Times, serif;
-        }
-
-        .dropdown li:last-child {
-            border-bottom: none;
-        }
-
-        .dropdown li:hover {
-            background-color: #bbadad;
-            color: #1a49e2;
-        }
-
-        .swap-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 60px;
-            padding-top: 37px;
-            margin: 0 10px;
-        }
-
-        .swapbox {
-            width: 50px;
-            height: 45px;
-            cursor: pointer;
-            border-radius: 18px;
-            transition: transform 0.3s;
-            background-color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-
-        .swapbox:hover {
-            transform: scale(1.1);
-        }
-
-        .rotate-once {
-            animation: rotateOnce 0.35s ease-in-out forwards;
-        }
-
-        @keyframes rotateOnce {
-            from {
-                transform: rotate(0deg);
+        /* Desktop Layout */
+        @media screen and (min-width: 769px) {
+            body {
+                flex-direction: row;
             }
 
-            to {
-                transform: rotate(180deg);
+            nav {
+                background-color: rgb(158, 5, 228);
+                width: 30%;
+                min-width: 320px;
+                max-width: 400px;
+                height: 100vh;
+                padding: 30px 20px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                overflow-y: auto;
+                flex-shrink: 0;
+            }
+
+            .nav-container {
+                width: 100%;
+                max-width: 100%;
+                margin: 0;
+            }
+
+            .title-container {
+                text-align: center;
+                margin-bottom: 40px;
+            }
+
+            .head1 {
+                font-size: 2.2rem;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                color: white;
+                margin-bottom: 10px;
+                margin-top: -3%;
+            }
+
+            .input-section {
+                width: 100%;
+                margin-top:-5%;
+            }
+
+            .input-row {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0;
+                width: 90%;
+            }
+
+            .input-wrapper {
+                width: 100%;
+                max-width: 100%;
+                min-width: auto;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-bottom: 0px;
+            }
+
+            #to-area {
+                margin-top: -8%;
+            }
+
+            .input-label {
+                color: #ffffff;
+                font-size: 1.3rem;
+                font-weight: bold;
+                margin-bottom: 5px;
+                display: block;
+                width: 90%;
+                text-align: left;
+            }
+
+            .input-area {
+                position: relative;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+
+            #fromBox,
+            #toBox {
+                background-color: #041f76;
+                border-radius: 10px;
+                width: 90%;
+                height: 50px;
+                padding: 0 15px;
+                font-size: 1.1rem;
+                border: 2px solid rgb(5, 5, 79);
+                color: white;
+                transition: border-color 0.3s;
+                margin-bottom: 0;
+            }
+
+            #fromBox:focus,
+            #toBox:focus {
+                outline: none;
+                border-color: #e0e2ea;
+            }
+
+            input::placeholder {
+                color: rgba(255, 255, 255, 0.8);
+            }
+
+            .dropdown {
+                margin-top: 0;
+                display: none;
+                position: absolute;
+                top: 110%;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 88%;
+                max-height: 225px;
+                overflow-y: auto;
+                background-color: white;
+                border: 1px solid #597ae8;
+                border-top: none;
+                border-radius: 0 0 10px 10px;
+                list-style-type: none;
+                z-index: 1000;
+                box-shadow: 0 4px 12px rgba(89, 87, 87, 0.1);
+            }
+
+            .dropdown li {
+                padding: 10px 12px;
+                border-bottom: 1px solid #eee;
+                cursor: pointer;
+                font-size: 1.3rem;
+                text-align: center;
+                transition: all 0.2s;
+                font-family: 'Times New Roman', Times, serif;
+            }
+
+            .dropdown li:last-child {
+                border-bottom: none;
+            }
+
+            .dropdown li:hover {
+                background-color: #bbadad;
+                color: #1a49e2;
+            }
+
+            .swap-container {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                padding: 0;
+                margin-left: 110%;
+            }
+
+            .swapbox {
+                width: 50px;
+                height: 50px;
+                cursor: pointer;
+                border-radius: 18px;
+                transition: transform 0.3s;
+                background-color: #fff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 24px;
+            }
+
+            .swapbox:hover {
+                transform: scale(1.1);
+            }
+
+            .rotate-once {
+                animation: rotateOnce 0.35s ease-in-out forwards;
+            }
+
+            @keyframes rotateOnce {
+                from {
+                    transform: rotate(0deg);
+                }
+
+                to {
+                    transform: rotate(180deg);
+                }
+            }
+
+            .button-container {
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+                margin-top: 15px;
+                margin-bottom: 10px;
+                width: 75%;
+                margin-left: 7%;
+            }
+
+            button {
+                background-color: rgb(5, 5, 79);
+                color: white;
+                width: 90%;
+                height: 45px;
+                border-radius: 18px;
+                font-size: 1.2rem;
+                border: 2px solid rgb(5, 5, 79);
+                cursor: pointer;
+                transition: all 0.3s;
+                font-weight: bold;
+            }
+
+            button:hover {
+                background-color: yellow;
+                color: rgb(10, 10, 10);
+                border-color: yellow;
+                transform: translateY(-2px);
+            }
+
+            .search-icon {
+                display: none;
+            }
+
+            .search-text {
+                display: inline;
+            }
+
+            .map-section {
+                flex: 1;
+                width: 75%;
+                height: 100vh;
+                position: relative;
+                background-color: #f5f5f5;
+                overflow: hidden;
             }
         }
 
-        .button-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
+        /* Mobile Layout - Keep original styling */
+        @media screen and (max-width: 768px) {
+            nav {
+                background-color: rgb(158, 5, 228);
+                width: 100%;
+                padding: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-shrink: 0;
+            }
 
-        button {
-            background-color: rgb(5, 5, 79);
-            color: white;
-            width: 140px;
-            height: 45px;
-            border-radius: 18px;
-            font-size: 1.1rem;
-            border: 2px solid rgb(5, 5, 79);
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-        }
+            .nav-container {
+                width: 100%;
+                max-width: 1400px;
+                margin: 0 auto;
+            }
 
-        button:hover {
-            background-color: yellow;
-            color: rgb(10, 10, 10);
-            border-color: yellow;
-            transform: translateY(-2px);
-        }
+            .title-container {
+                text-align: center;
+                margin-bottom: 30px;
+            }
 
-        .map-section {
-            flex: 1;
-            width: 100%;
-            position: relative;
-            background-color: #f5f5f5;
-            overflow: hidden;
+            .head1 {
+                font-size: 2rem;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                color: white;
+                margin-bottom: 20px;
+            }
+
+            .input-section {
+                width: 100%;
+                position: relative;
+            }
+
+            .input-row {
+                display: grid;
+                grid-template-columns: 1fr auto;
+                grid-template-rows: auto auto;
+                gap: 10px 15px;
+                align-items: start;
+                max-width: 340px;
+                margin: 0 auto 0px;
+                margin-left: -2%;
+            }
+
+            .swap-container {
+                grid-column: 2;
+                grid-row: 1 / span 2;
+                padding-top: 35px;
+                margin: 0;
+                width: 60px;
+                display: flex;
+                justify-content: center;
+                margin-top: -53%;
+            }
+
+            .swapbox {
+                width: 45px;
+                height: 45px;
+                cursor: pointer;
+                border-radius: 18px;
+                transition: transform 0.3s;
+                background-color: #fff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 24px;
+            }
+
+            .swapbox:hover {
+                transform: scale(1.1);
+            }
+
+            .rotate-once {
+                animation: rotateOnce 0.35s ease-in-out forwards;
+            }
+
+            @keyframes rotateOnce {
+                from {
+                    transform: rotate(0deg);
+                }
+
+                to {
+                    transform: rotate(180deg);
+                }
+            }
+
+            .input-wrapper {
+                grid-column: 1;
+                width: 100%;
+                max-width: none;
+                min-width: auto;
+                margin: 0;
+            }
+
+            .input-wrapper:first-child {
+                grid-row: 1;
+                margin-bottom: 5px;
+            }
+
+            .input-wrapper:last-child {
+                grid-row: 2;
+                margin-top: 0;
+            }
+
+            .input-label {
+                display: none;
+            }
+
+            .input-area {
+                position: relative;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+
+            #fromBox,
+            #toBox {
+                background-color: #041f76;
+                border-radius: 10px;
+                width: 100%;
+                height: 45px;
+                padding: 0 15px;
+                font-size: 1.1rem;
+                border: 2px solid rgb(5, 5, 79);
+                color: white;
+                transition: border-color 0.3s;
+                margin-bottom: 0;
+            }
+
+            #fromBox:focus,
+            #toBox:focus {
+                outline: none;
+                border-color: #e0e2ea;
+            }
+
+            input::placeholder {
+                color: rgba(255, 255, 255, 0.8);
+            }
+
+            .dropdown {
+                width: 97%;
+                margin-top: 3%;
+                height: 220px;
+                font-size: 30px;
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                max-height: 275px;
+                overflow-y: auto;
+                background-color: white;
+                border: 1px solid #597ae8;
+                border-top: none;
+                border-radius: 0 0 10px 10px;
+                list-style-type: none;
+                z-index: 1000;
+                box-shadow: 0 4px 12px rgba(89, 87, 87, 0.1);
+            }
+
+            .dropdown li {
+                padding: 10px 12px;
+                border-bottom: 1px solid #eee;
+                cursor: pointer;
+                font-size: 21px;
+                text-align: center;
+                transition: all 0.2s;
+                font-family: 'Times New Roman', Times, serif;
+            }
+
+            .dropdown li:last-child {
+                border-bottom: none;
+            }
+
+            .dropdown li:hover {
+                background-color: #bbadad;
+                color: #1a49e2;
+            }
+
+            .button-container {
+                position: absolute;
+                top: 40%;
+                right: -2%;
+                display: block;
+                flex-direction: column;
+                gap: 8px;
+                margin: 0;
+                margin-top: 7%;
+            }
+
+            button {
+                background-color: rgb(5, 5, 79);
+                color: white;
+                width: 40px;
+                height: 40px;
+                margin: 0;
+                border-radius: 12px;
+                font-size: 1.1rem;
+                border: 2px solid rgb(5, 5, 79);
+                cursor: pointer;
+                transition: all 0.3s;
+                font-weight: bold;
+            }
+
+            button:hover {
+                background-color: yellow;
+                color: rgb(10, 10, 10);
+                border-color: yellow;
+                transform: translateY(-2px);
+            }
+
+            .search-text {
+                display: none;
+            }
+
+            .search-icon {
+                display: inline;
+                font-size: 20px;
+            }
+
+            .map-section {
+                flex: 1;
+                width: 100%;
+                position: relative;
+                background-color: #f5f5f5;
+                overflow: hidden;
+            }
         }
 
         .map-container {
@@ -335,108 +593,434 @@
             border: none;
         }
 
-        /* mobile responsive */
-        @media screen and (max-width: 768px) {
-            .head1 {
-                font-size: 2rem;
+        /* Sidebar Styles */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --text-dark: #2c3e50;
+            --text-light: #ecf0f1;
+            --bg-light: #f8f9fa;
+            --sidebar-bg: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --shadow-dark: rgba(0, 0, 0, 0.2);
+            --border-radius: 12px;
+            --transition: 0.3s ease;
+        }
+
+        /* Overlay for mobile */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition);
+            z-index: 998;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 380px;
+            height: 100vh;
+            background: var(--sidebar-bg);
+            box-shadow: -4px 0 20px var(--shadow-dark);
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1001;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar.open {
+            right: 0;
+        }
+
+        /* Sidebar Header */
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition);
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        /* Sidebar Content */
+        .sidebar-content {
+            padding: 20px;
+            flex: 1;
+        }
+
+        /* Accordion Item */
+        .accordion-item {
+            margin-bottom: 16px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            background: var(--bg-light);
+            box-shadow: 0 2px 8px var(--shadow);
+            transition: all var(--transition);
+        }
+
+        .accordion-item:hover {
+            box-shadow: 0 4px 12px var(--shadow-dark);
+        }
+
+        .accordion-item summary {
+            padding: 16px 20px;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--text-dark);
+            background: white;
+            transition: all var(--transition);
+            user-select: none;
+        }
+
+        .accordion-item summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .accordion-item summary:hover {
+            background: var(--bg-light);
+            color: var(--accent-color);
+        }
+
+        .accordion-item[open] summary {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .accordion-item[open] summary .summary-icon {
+            stroke: white;
+        }
+
+        .summary-icon {
+            flex-shrink: 0;
+            transition: all var(--transition);
+        }
+
+        .accordion-item[open] summary::after {
+            content: '';
+            margin-left: auto;
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 8px solid white;
+        }
+
+        .accordion-item:not([open]) summary::after {
+            content: '';
+            margin-left: auto;
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px transparent;
+            border-bottom: 8px solid var(--text-dark);
+        }
+
+        /* Department List */
+        .department-list {
+            list-style: none;
+            padding: 16px 20px;
+            background: white;
+        }
+
+        .department-list li {
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            transition: all var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .department-list li:hover {
+            background: #e8f4fd;
+            border-left-color: var(--accent-color);
+            transform: translateX(4px);
+        }
+
+        .department-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Floor Info */
+        .floor-info {
+            padding: 16px 20px;
+            background: white;
+        }
+
+        .room-range {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 8px;
+        }
+
+        .floor-desc {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        /* Scrollbar Styling */
+        .sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: var(--bg-light);
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #bdc3c7;
+            border-radius: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #95a5a6;
+        }
+
+        /* Clickable location link in popup */
+        .location-link {
+            color: #1967d2;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .location-link:hover {
+            color: #0d47a1;
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .sidebar.open {
+            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .sidebar {
+                max-width: 100%;
             }
 
-            .input-section {
-                position: relative;
+            .sidebar-header h1 {
+                font-size: 1.5rem;
             }
 
-            .input-row {
-                display: grid;
-                grid-template-columns: 1fr auto;
-                grid-template-rows: auto auto;
-                gap: 10px 15px;
-                align-items: start;
-                max-width: 340px;
-                margin: 0 auto 0px;
-                margin-left: -2%;
+            .accordion-item summary {
+                padding: 14px 16px;
+                font-size: 1rem;
             }
 
-            .swap-container {
-                grid-column: 2;
-                grid-row: 1 / span 2;
-                padding-top: 35px;
-                margin: 0;
-                width: 60px;
-                display: flex;
-                justify-content: center;
-                margin-top: -53%;
+            .department-list li {
+                padding: 10px 14px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar-header {
+                padding: 20px;
             }
 
-            .swapbox {
-                width: 45px;
+            .sidebar-content {
+                padding: 15px;
             }
+        }
 
-            .input-wrapper {
-                grid-column: 1;
-                width: 100%;
-                max-width: none;
-                min-width: auto;
-                margin: 0;
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
+        }
 
-            .input-wrapper:first-child {
-                grid-row: 1;
-                margin-bottom: 5px;
-            }
+        /* Focus styles for keyboard navigation */
+        .close-btn:focus,
+        .accordion-item summary:focus {
+            outline: 3px solid var(--accent-color);
+            outline-offset: 2px;
+        }
 
-            .input-wrapper:last-child {
-                grid-row: 2;
-                margin-top: 0;
+        /* New styles for deviation warnings */
+        .deviation-warning {
+            position: absolute;
+            top: -50px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: 90%;
+            z-index: 1001;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
             }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .rerouting-notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+        
+        .rerouting-notification i {
+            font-size: 20px;
+        }
 
-            #fromBox,
-            #toBox {
-                width: 100%;
-                height: 45px;
-                margin-bottom: 0;
-            }
+        /* Off-route indicator */
+        .off-route-indicator {
+            position: absolute;
+            bottom: 170px;
+            right: 20px;
+            z-index: 1000;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
 
-            .dropdown {
-                width: 97%;
-                margin-top: 3%;
-                height: 220px;
-                font-size: 30px;
-            }
+        .off-route-indicator.active {
+            display: flex;
+            animation: bounce 0.5s infinite alternate;
+        }
 
-            .dropdown li {
-                font-size: 21px;
-            }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-5px); }
+        }
 
-            .input-label {
-                display: none;
-            }
+        /* Route progress bar */
+        .route-progress {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 200px;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            z-index: 1000;
+            display: none;
+        }
 
-            .button-container {
-                position: absolute;
-                top: 40%;
-                right: -2%;
-                display: block;
-                flex-direction: column;
-                gap: 8px;
-                margin: 0;
-                margin-top: 7%;
-            }
+        .route-progress.active {
+            display: block;
+        }
 
-            button {
-                width: 40px;
-                height: 40px;
-                margin: 0;
-                border-radius: 12px;
-            }
-
-            .search-text {
-                display: none;
-            }
-
-            .search-icon {
-                display: inline;
-                font-size: 20px;
-            }
+        .route-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            width: 0%;
+            transition: width 0.5s ease;
         }
     </style>
 </head>
@@ -475,11 +1059,11 @@
 
                 <div class="button-container">
                     <button id="but1" onclick="searchRoute()">
-                        <span class="search-text">Search</span>
+                        <span class="search-text">Search ❯❯</span>
                         <span class="search-icon">❯❯</span>
                     </button>
                     <button id="but2" onclick="clearRoute()">
-                        <span class="search-text">Clear</span>
+                        <span class="search-text">Clear ❌</span>
                         <span class="search-icon">❌</span>
                     </button>
                 </div>
@@ -494,8 +1078,105 @@
         <button id="landmarkToggleBtn" class="landmark-toggle-btn">
             <i class="fas fa-map-pin"></i>
         </button>
+        <button id="offRouteIndicator" class="off-route-indicator" title="You're off route! Click to recalculate">
+            <i class="fas fa-exclamation-triangle"></i>
+        </button>
+        <div id="routeProgress" class="route-progress">
+            <div id="routeProgressFill" class="route-progress-fill"></div>
+        </div>
+        <div id="navInfoPanel" class="nav-info-panel">
+            <div id="navDistance" class="nav-info-distance">0.00 km</div>
+            <div id="navTime" class="nav-info-time">0 min remaining</div>
+        </div>
         <div id="mapContainer" class="map-container"></div>
     </div>
+
+    <!-- Overlay for sidebar -->
+    <div id="overlay" class="overlay"></div>
+
+    <!-- Sidebar Menu -->
+    <aside id="sideMenu" class="sidebar" role="complementary">
+        <div class="sidebar-header">
+            <h1>E Block</h1>
+            <button class="close-btn" id="closeBtn" aria-label="Close sidebar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <div class="sidebar-content">
+            <details class="accordion-item">
+                <summary>
+                    <svg class="summary-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    Departments
+                </summary>
+                <ul class="department-list">
+                    <li>B.Sc Computer Science</li>
+                    <li>B.Sc Computer Application</li>
+                    <li>B.Sc Computer Technology</li>
+                    <li>B.Sc Data Analytics</li>
+                    <li>B.Sc Computer Networks</li>
+                    <li>B.Sc Information Technology</li>
+                    <li>M.Sc Software Systems</li>
+                </ul>
+            </details>
+
+            <details class="accordion-item">
+                <summary>
+                    <svg class="summary-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    Ground Floor
+                </summary>
+                <div class="floor-info">
+                    <p class="room-range">Rooms: E101 - E120</p>
+                    <p class="floor-desc">20 rooms available</p>
+                </div>
+            </details>
+
+            <details class="accordion-item">
+                <summary>
+                    <svg class="summary-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    First Floor
+                </summary>
+                <div class="floor-info">
+                    <p class="room-range">Rooms: E201 - E220</p>
+                    <p class="floor-desc">20 rooms available</p>
+                </div>
+            </details>
+
+            <details class="accordion-item">
+                <summary>
+                    <svg class="summary-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    Second Floor
+                </summary>
+                <div class="floor-info">
+                    <p class="room-range">Rooms: E301 - E320</p>
+                    <p class="floor-desc">20 rooms available</p>
+                </div>
+            </details>
+        </div>
+    </aside>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
@@ -513,6 +1194,25 @@
         let landmarkMarkersLayer = null;
         let landmarksVisible = true;
         let animationFrameId = null;
+
+        // Navigation state
+        let isNavigating = false;
+        let currentDestination = null;
+        let fullRoutePath = [];
+        let currentPathIndices = [];
+        let lastUpdateTime = 0;
+        const UPDATE_THRESHOLD = 2000; // 2 seconds
+        const PROXIMITY_THRESHOLD = 15; // 15 meters
+
+        // Real-time path recalculation variables
+        let routeRecalculationTimer = null;
+        let lastKnownPosition = null;
+        let maxDeviationDistance = 50; // meters - max allowed deviation before recalculating
+        let routeRecalculationInProgress = false;
+        let lastRecalculationTime = 0;
+        const RECALCULATION_COOLDOWN = 5000; // 5 seconds between recalculations
+        let totalRouteDistance = 0;
+        let distanceTraveled = 0;
 
         let graph = { nodes: [], edges: [] };
         let nodeIndex = new Map();
@@ -750,6 +1450,30 @@
             'Back Gate': 'back'
         };
 
+        // ─── Sidebar Functions ────────────────────────────────────────────
+
+        function openSidebar() {
+            const sideMenu = document.getElementById('sideMenu');
+            const overlay = document.getElementById('overlay');
+            
+            sideMenu.classList.add('open');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            setTimeout(() => {
+                document.getElementById('closeBtn').focus();
+            }, 100);
+        }
+
+        function closeSidebar() {
+            const sideMenu = document.getElementById('sideMenu');
+            const overlay = document.getElementById('overlay');
+            
+            sideMenu.classList.remove('open');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
         // ─── Custom Icon Factories ────────────────────────────────────────────
 
         function createStartIcon() {
@@ -886,15 +1610,24 @@
             document.querySelectorAll(".dropdown").forEach(list => list.style.display = "none");
 
             // Stop navigation
-            isNavigating = false;
-            currentDestination = null;
-            fullRoutePath = [];
-            currentPathIndices = [];
+            stopNavigation();
 
             // Hide navigation panel
             const navPanel = document.getElementById('navInfoPanel');
             if (navPanel) {
                 navPanel.classList.remove('active');
+            }
+
+            // Hide progress bar
+            const progressBar = document.getElementById('routeProgress');
+            if (progressBar) {
+                progressBar.classList.remove('active');
+            }
+
+            // Hide off-route indicator
+            const offRouteIndicator = document.getElementById('offRouteIndicator');
+            if (offRouteIndicator) {
+                offRouteIndicator.classList.remove('active');
             }
 
             if (campusMap) {
@@ -924,7 +1657,419 @@
             });
         }
 
-        // Map initialization
+        // ─── REAL-TIME PATH RECALCULATION FUNCTIONS ──────────────────────────────────
+
+        function geolocationSuccess(pos) {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+            const accuracy = pos.coords.accuracy;
+            
+            const newPosition = [lat, lng];
+            userLatLng = newPosition;
+
+            // Update user marker and accuracy circle
+            if (userLocationMarker) {
+                campusMap.removeLayer(userLocationMarker);
+                userLocationMarker = null;
+            }
+            if (accuracyCircle) {
+                campusMap.removeLayer(accuracyCircle);
+                accuracyCircle = null;
+            }
+
+            userLocationMarker = L.circleMarker(userLatLng, {
+                radius: 10,
+                fillColor: '#4285F4',
+                color: '#ffffff',
+                weight: 3,
+                opacity: 1,
+                fillOpacity: 0.8,
+                zIndexOffset: 1100
+            }).addTo(campusMap);
+
+            accuracyCircle = L.circle(userLatLng, {
+                radius: accuracy,
+                fillColor: '#4285F4',
+                color: '#4285F4',
+                weight: 1,
+                opacity: 0.3,
+                fillOpacity: 0.1
+            }).addTo(campusMap);
+
+            // Store last known position for deviation calculation
+            lastKnownPosition = { lat, lng };
+
+            // If navigating, check for deviation and update path
+            if (isNavigating && currentDestination) {
+                checkUserDeviationAndRecalculate();
+                
+                // Also update navigation info
+                updatePathBasedOnLocation();
+                
+                // Update progress bar
+                updateRouteProgress();
+            }
+
+            console.log(`Location: ${lat.toFixed(6)}, ${lng.toFixed(6)} - Accuracy: ${accuracy.toFixed(0)}m`);
+        }
+
+        function checkUserDeviationAndRecalculate() {
+            const now = Date.now();
+            
+            // Throttle recalculations
+            if (routeRecalculationInProgress || (now - lastRecalculationTime < RECALCULATION_COOLDOWN)) {
+                return;
+            }
+
+            if (!lastKnownPosition || !fullRoutePath || fullRoutePath.length === 0) {
+                return;
+            }
+
+            // Find closest point on current route
+            const userPos = { lat: lastKnownPosition.lat, lng: lastKnownPosition.lng };
+            let closestDistance = Infinity;
+            let closestPointIndex = -1;
+            let closestPointOnSegment = null;
+
+            // Check distance to each segment of the route
+            for (let i = 0; i < fullRoutePath.length - 1; i++) {
+                const pointA = fullRoutePath[i];
+                const pointB = fullRoutePath[i + 1];
+                
+                // Convert to objects for the nearestPointOnSegment function
+                const a = { lat: pointA[0], lng: pointA[1] };
+                const b = { lat: pointB[0], lng: pointB[1] };
+                
+                const nearestPoint = nearestPointOnSegment(userPos, a, b);
+                const distance = hav(userPos, nearestPoint);
+                
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestPointIndex = i;
+                    closestPointOnSegment = nearestPoint;
+                }
+            }
+
+            console.log(`Distance to route: ${closestDistance.toFixed(2)}m, Max allowed: ${maxDeviationDistance}m`);
+
+            // Update off-route indicator
+            const offRouteIndicator = document.getElementById('offRouteIndicator');
+            if (offRouteIndicator) {
+                if (closestDistance > maxDeviationDistance) {
+                    offRouteIndicator.classList.add('active');
+                    offRouteIndicator.title = `You're ${closestDistance.toFixed(0)}m off route! Click to recalculate`;
+                } else {
+                    offRouteIndicator.classList.remove('active');
+                }
+            }
+
+            // If user is too far from the route, recalculate
+            if (closestDistance > maxDeviationDistance) {
+                console.log("User deviated from route! Recalculating...");
+                routeRecalculationInProgress = true;
+                
+                // Show notification to user
+                showDeviationNotification(closestDistance);
+                
+                // Recalculate route from current position
+                recalculateRouteFromCurrentPosition();
+                
+                lastRecalculationTime = now;
+            } else if (closestDistance > maxDeviationDistance * 0.7) {
+                // User is approaching deviation threshold - give warning
+                showApproachingDeviationWarning(closestDistance);
+            }
+        }
+
+        function showDeviationNotification(distance) {
+            // Create or update a notification on the map
+            const notification = L.popup()
+                .setLatLng(userLatLng)
+                .setContent(`
+                    <div style="text-align: center; padding: 10px;">
+                        <div style="color: #d32f2f; font-size: 18px; margin-bottom: 8px;">
+                            <i class="fas fa-exclamation-triangle"></i> Off Route
+                        </div>
+                        <div style="font-size: 14px; margin-bottom: 10px;">
+                            You're ${distance.toFixed(0)}m off the route
+                        </div>
+                        <div style="font-size: 12px; color: #666;">
+                            Recalculating new path...
+                        </div>
+                    </div>
+                `)
+                .openOn(campusMap);
+            
+            // Auto-close notification after 5 seconds
+            setTimeout(() => {
+                if (notification && notification.isOpen) {
+                    campusMap.closePopup();
+                }
+            }, 5000);
+        }
+
+        function showApproachingDeviationWarning(distance) {
+            // Only show warning if not already showing
+            const existingWarning = document.querySelector('.deviation-warning');
+            if (existingWarning) return;
+            
+            const warningDiv = document.createElement('div');
+            warningDiv.className = 'deviation-warning';
+            warningDiv.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 6px; color: #856404;">
+                    <i class="fas fa-exclamation-circle" style="color: #ffc107;"></i>
+                    <span>You're ${distance.toFixed(0)}m from the route</span>
+                </div>
+            `;
+            
+            // Add to navigation panel
+            const navPanel = document.getElementById('navInfoPanel');
+            if (navPanel) {
+                navPanel.appendChild(warningDiv);
+                
+                // Auto-remove after 5 seconds
+                setTimeout(() => {
+                    if (warningDiv.parentNode) {
+                        warningDiv.remove();
+                    }
+                }, 5000);
+            }
+        }
+
+        function recalculateRouteFromCurrentPosition() {
+            if (!isNavigating || !currentDestination || !userLatLng) {
+                routeRecalculationInProgress = false;
+                return;
+            }
+
+            const userPos = { lat: userLatLng[0], lng: userLatLng[1] };
+            
+            // Find nearest graph node to current position
+            let nearestNodeId = null;
+            let minDistance = Infinity;
+            
+            graph.nodes.forEach((node, index) => {
+                const distance = hav(userPos, node);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    nearestNodeId = index;
+                }
+            });
+
+            if (nearestNodeId === null) {
+                console.error("Could not find nearest graph node");
+                routeRecalculationInProgress = false;
+                return;
+            }
+
+            // Find destination node
+            const destNodeId = nodeIndex.get(`ENT_${currentDestination.id}`);
+            if (destNodeId === undefined) {
+                console.error("Cannot find destination entrance node");
+                routeRecalculationInProgress = false;
+                return;
+            }
+
+            // Calculate new route
+            const results = yensKShortests(nearestNodeId, destNodeId, KROUTES);
+            if (!results.length) {
+                console.error("No new path found");
+                routeRecalculationInProgress = false;
+                
+                // Show error notification
+                L.popup()
+                    .setLatLng(userLatLng)
+                    .setContent(`
+                        <div style="text-align: center; padding: 10px;">
+                            <div style="color: #d32f2f; font-size: 18px; margin-bottom: 8px;">
+                                <i class="fas fa-times-circle"></i> Cannot Recalculate
+                            </div>
+                            <div style="font-size: 14px;">
+                                Unable to find new path. Please return to the route.
+                            </div>
+                        </div>
+                    `)
+                    .openOn(campusMap);
+                return;
+            }
+
+            // Update the route with new calculation
+            lastResults = results;
+            currentPathIndices = results[0].path;
+            fullRoutePath = currentPathIndices.map(i => [graph.nodes[i].lat, graph.nodes[i].lng]);
+            
+            // Update total route distance
+            totalRouteDistance = pathDistance(currentPathIndices);
+            
+            // Re-render the route
+            renderDynamicRoute();
+            
+            // Update navigation info
+            const remainingDistance = pathDistance(currentPathIndices);
+            updateNavigationInfo(remainingDistance);
+            
+            // Show success notification
+            L.popup()
+                .setLatLng(userLatLng)
+                .setContent(`
+                    <div style="text-align: center; padding: 10px;">
+                        <div style="color: #388e3c; font-size: 18px; margin-bottom: 8px;">
+                            <i class="fas fa-check-circle"></i> Route Updated
+                        </div>
+                        <div style="font-size: 14px;">
+                            New path calculated successfully!
+                        </div>
+                    </div>
+                `)
+                .openOn(campusMap);
+            
+            routeRecalculationInProgress = false;
+            
+            // Auto-close success notification after 3 seconds
+            setTimeout(() => {
+                campusMap.closePopup();
+            }, 3000);
+        }
+
+        function updateRouteProgress() {
+            if (!isNavigating || !totalRouteDistance || totalRouteDistance === 0) {
+                return;
+            }
+
+            const userPos = { lat: userLatLng[0], lng: userLatLng[1] };
+            let closestDistance = Infinity;
+            let closestIndex = -1;
+
+            // Find closest point on route
+            for (let i = 0; i < fullRoutePath.length; i++) {
+                const point = fullRoutePath[i];
+                const distance = hav(userPos, { lat: point[0], lng: point[1] });
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestIndex = i;
+                }
+            }
+
+            if (closestIndex >= 0) {
+                // Calculate distance traveled by measuring from start to closest point
+                let traveled = 0;
+                for (let i = 0; i < closestIndex; i++) {
+                    if (i < fullRoutePath.length - 1) {
+                        const pointA = fullRoutePath[i];
+                        const pointB = fullRoutePath[i + 1];
+                        traveled += hav({ lat: pointA[0], lng: pointA[1] }, { lat: pointB[0], lng: pointB[1] });
+                    }
+                }
+
+                distanceTraveled = traveled;
+                const progressPercentage = (distanceTraveled / totalRouteDistance) * 100;
+                
+                // Update progress bar
+                const progressFill = document.getElementById('routeProgressFill');
+                const progressBar = document.getElementById('routeProgress');
+                if (progressFill && progressBar) {
+                    progressFill.style.width = `${Math.min(progressPercentage, 100)}%`;
+                    progressBar.classList.add('active');
+                }
+            }
+        }
+
+        // ─── CORE FUNCTIONS (Updated) ──────────────────────────────────────────────
+
+        function updatePathBasedOnLocation() {
+            if (!isNavigating || !userLatLng || !currentDestination || currentPathIndices.length === 0) {
+                return;
+            }
+
+            const now = Date.now();
+            if (now - lastUpdateTime < UPDATE_THRESHOLD) {
+                return;
+            }
+            lastUpdateTime = now;
+
+            const userPos = { lat: userLatLng[0], lng: userLatLng[1] };
+
+            // Find closest point on current path
+            let closestIndex = 0;
+            let minDist = Infinity;
+
+            for (let i = 0; i < currentPathIndices.length; i++) {
+                const nodeIdx = currentPathIndices[i];
+                const node = graph.nodes[nodeIdx];
+                const dist = hav(userPos, node);
+
+                if (dist < minDist) {
+                    minDist = dist;
+                    closestIndex = i;
+                }
+            }
+
+            // Remove passed waypoints if user is close enough
+            if (minDist < PROXIMITY_THRESHOLD && closestIndex > 0) {
+                console.log(`User passed waypoint ${closestIndex}, updating path...`);
+                currentPathIndices = currentPathIndices.slice(closestIndex);
+                
+                // Update full route path for deviation checking
+                fullRoutePath = currentPathIndices.map(i => [graph.nodes[i].lat, graph.nodes[i].lng]);
+
+                // Recalculate remaining distance
+                const remainingDistance = pathDistance(currentPathIndices);
+                updateNavigationInfo(remainingDistance);
+
+                // Re-render the route if significant portion passed
+                if (closestIndex > 3) { // Only re-render if we passed at least 4 points
+                    renderDynamicRoute();
+                }
+            } else {
+                // Just update info without re-rendering
+                const remainingDistance = pathDistance(currentPathIndices.slice(closestIndex));
+                updateNavigationInfo(remainingDistance);
+            }
+        }
+
+        function updateNavigationInfo(remainingDistance) {
+            const navPanel = document.getElementById('navInfoPanel');
+            const distanceEl = document.getElementById('navDistance');
+            const timeEl = document.getElementById('navTime');
+
+            if (!navPanel || !distanceEl || !timeEl) return;
+
+            navPanel.classList.add('active');
+
+            const km = (remainingDistance / 1000).toFixed(2);
+            const mins = Math.round((remainingDistance / 1.4) / 60);
+
+            distanceEl.textContent = `${km} km`;
+            timeEl.textContent = `${mins} min remaining`;
+
+            // Check if destination reached
+            if (remainingDistance < 10) {
+                distanceEl.textContent = 'Arrived!';
+                timeEl.textContent = 'You have reached your destination';
+                setTimeout(() => {
+                    isNavigating = false;
+                    navPanel.classList.remove('active');
+                    
+                    // Show arrival notification
+                    L.popup()
+                        .setLatLng(userLatLng)
+                        .setContent(`
+                            <div style="text-align: center; padding: 15px;">
+                                <div style="color: #388e3c; font-size: 20px; margin-bottom: 10px;">
+                                    <i class="fas fa-check-circle"></i> Destination Reached!
+                                </div>
+                                <div style="font-size: 14px; color: #666;">
+                                    You have arrived at your destination
+                                </div>
+                            </div>
+                        `)
+                        .openOn(campusMap);
+                }, 3000);
+            }
+        }
+
+        // ─── Map initialization ────────────────────────────────────────────
+
         function initializeMap() {
             if (campusMap) {
                 campusMap.invalidateSize();
@@ -1185,80 +2330,6 @@
                 .openPopup();
         }
 
-        // ─── Dynamic Path Update Functions ────────────────────────────────────────
-
-        function updateNavigationInfo(remainingDistance) {
-            const navPanel = document.getElementById('navInfoPanel');
-            const distanceEl = document.getElementById('navDistance');
-            const timeEl = document.getElementById('navTime');
-
-            if (!navPanel || !distanceEl || !timeEl) return;
-
-            navPanel.classList.add('active');
-
-            const km = (remainingDistance / 1000).toFixed(2);
-            const mins = Math.round((remainingDistance / 1.4) / 60);
-
-            distanceEl.textContent = `${km} km`;
-            timeEl.textContent = `${mins} min remaining`;
-
-            // Check if destination reached
-            if (remainingDistance < 10) {
-                distanceEl.textContent = 'Arrived!';
-                timeEl.textContent = 'You have reached your destination';
-                setTimeout(() => {
-                    isNavigating = false;
-                    navPanel.classList.remove('active');
-                }, 3000);
-            }
-        }
-
-        function updatePathBasedOnLocation() {
-            if (!isNavigating || !userLatLng || !currentDestination || currentPathIndices.length === 0) {
-                return;
-            }
-
-            const now = Date.now();
-            if (now - lastUpdateTime < UPDATE_THRESHOLD) {
-                return; // Throttle updates
-            }
-            lastUpdateTime = now;
-
-            const userPos = { lat: userLatLng[0], lng: userLatLng[1] };
-
-            // Find closest point on current path
-            let closestIndex = 0;
-            let minDist = Infinity;
-
-            for (let i = 0; i < currentPathIndices.length; i++) {
-                const nodeIdx = currentPathIndices[i];
-                const node = graph.nodes[nodeIdx];
-                const dist = hav(userPos, node);
-
-                if (dist < minDist) {
-                    minDist = dist;
-                    closestIndex = i;
-                }
-            }
-
-            // Remove passed waypoints if user is close enough
-            if (minDist < PROXIMITY_THRESHOLD && closestIndex > 0) {
-                console.log(`User passed waypoint ${closestIndex}, updating path...`);
-                currentPathIndices = currentPathIndices.slice(closestIndex);
-
-                // Recalculate remaining distance
-                const remainingDistance = pathDistance(currentPathIndices);
-                updateNavigationInfo(remainingDistance);
-
-                // Re-render the route
-                renderDynamicRoute();
-            } else {
-                // Just update info without re-rendering
-                const remainingDistance = pathDistance(currentPathIndices.slice(closestIndex));
-                updateNavigationInfo(remainingDistance);
-            }
-        }
-
         function renderDynamicRoute() {
             if (!isNavigating || currentPathIndices.length === 0) return;
 
@@ -1365,9 +2436,12 @@
             if (fromVal === 'Current Location') {
                 fullRoutePath = selectedLatlngs;
                 currentPathIndices = results[selectedIndex].path;
+                totalRouteDistance = results[selectedIndex].distance;
+                distanceTraveled = 0;
 
                 const meters = results[selectedIndex].distance;
                 updateNavigationInfo(meters);
+                updateRouteProgress();
             }
 
             // Re-add markers
@@ -1480,12 +2554,25 @@
                 }
 
                 lastResults = results;
+                currentPathIndices = results[0].path;
+                fullRoutePath = currentPathIndices.map(i => [graph.nodes[i].lat, graph.nodes[i].lng]);
+                totalRouteDistance = results[0].distance;
+                distanceTraveled = 0;
+                
                 setStartEndMarkers(
                     { lat: userLatLng[0], lng: userLatLng[1], name: 'Your Location' },
                     B
                 );
                 renderSelectedRoute(0);
-
+                
+                // Show progress bar
+                const progressBar = document.getElementById('routeProgress');
+                if (progressBar) {
+                    progressBar.classList.add('active');
+                }
+                
+                console.log("Route navigation started with deviation monitoring");
+                
             } else {
                 // Static route (not from current location)
                 isNavigating = false;
@@ -1494,6 +2581,12 @@
                 const navPanel = document.getElementById('navInfoPanel');
                 if (navPanel) {
                     navPanel.classList.remove('active');
+                }
+
+                // Hide progress bar
+                const progressBar = document.getElementById('routeProgress');
+                if (progressBar) {
+                    progressBar.classList.remove('active');
                 }
 
                 const A = getLandmarkByNameOrId(fromLocation);
@@ -1540,12 +2633,21 @@
                     popupAnchor: [0, -18]
                 });
 
-                L.marker([place.lat, place.lng], {
+                const marker = L.marker([place.lat, place.lng], {
                     icon: icon,
                     title: place.name
-                })
-                    .bindPopup(`<strong style="font-size: 14px;">${place.name}</strong>`)
-                    .addTo(landmarkMarkersLayer);
+                });
+
+                // Create popup content with clickable link for E Block
+                let popupContent;
+                if (place.name === 'E Block') {
+                    popupContent = `<strong style="font-size: 14px;"><a href="#" class="location-link" onclick="openSidebar(); return false;">${place.name}</a></strong>`;
+                }
+                else {
+                    popupContent = `<strong style="font-size: 14px;">${place.name}</strong>`;
+                }
+
+                marker.bindPopup(popupContent).addTo(landmarkMarkersLayer);
             });
 
             console.log(`Initialized ${locationmarker.length} landmark markers`);
@@ -1583,52 +2685,12 @@
                 {
                     enableHighAccuracy: true,
                     maximumAge: 1000,
-                    timeout: 5000
+                    timeout: 5000,
+                    frequency: 1000 // Try to update every second
                 }
             );
-        }
-
-        function geolocationSuccess(pos) {
-            const lat = pos.coords.latitude;
-            const lng = pos.coords.longitude;
-            const accuracy = pos.coords.accuracy;
-
-            userLatLng = [lat, lng];
-
-            if (userLocationMarker) {
-                campusMap.removeLayer(userLocationMarker);
-                userLocationMarker = null;
-            }
-            if (accuracyCircle) {
-                campusMap.removeLayer(accuracyCircle);
-                accuracyCircle = null;
-            }
-
-            userLocationMarker = L.circleMarker(userLatLng, {
-                radius: 10,
-                fillColor: '#4285F4',
-                color: '#ffffff',
-                weight: 3,
-                opacity: 1,
-                fillOpacity: 0.8,
-                zIndexOffset: 1100
-            }).addTo(campusMap);
-
-            accuracyCircle = L.circle(userLatLng, {
-                radius: accuracy,
-                fillColor: '#4285F4',
-                color: '#4285F4',
-                weight: 1,
-                opacity: 0.3,
-                fillOpacity: 0.1
-            }).addTo(campusMap);
-
-            // Update path dynamically if navigating
-            if (isNavigating) {
-                updatePathBasedOnLocation();
-            }
-
-            console.log(`Location: ${lat.toFixed(6)}, ${lng.toFixed(6)} - Accuracy: ${accuracy.toFixed(0)}m`);
+            
+            console.log("Continuous geolocation monitoring started");
         }
 
         function geolocationError(err) {
@@ -1668,6 +2730,27 @@
             }
         }
 
+        function stopNavigation() {
+            isNavigating = false;
+            currentDestination = null;
+            fullRoutePath = [];
+            currentPathIndices = [];
+            totalRouteDistance = 0;
+            distanceTraveled = 0;
+            
+            // Clear any deviation warnings
+            const warnings = document.querySelectorAll('.deviation-warning');
+            warnings.forEach(warning => warning.remove());
+            
+            // Clear geolocation watch if no longer needed
+            if (userWatchId) {
+                navigator.geolocation.clearWatch(userWatchId);
+                userWatchId = null;
+            }
+            
+            console.log("Navigation stopped");
+        }
+
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function () {
             const fromList = document.getElementById('fromList');
@@ -1686,6 +2769,7 @@
             initializeMap();
             setupSwapButton();
             setupGlobalClickHandler();
+            setupSidebarHandlers();
 
             const currentLocBtn = document.getElementById('currentLocationBtn');
             if (currentLocBtn) {
@@ -1697,8 +2781,103 @@
                 landmarkToggleBtn.addEventListener('click', toggleLandmarks);
             }
 
-            console.log('Campus Navigation System initialized');
+            const offRouteIndicator = document.getElementById('offRouteIndicator');
+            if (offRouteIndicator) {
+                offRouteIndicator.addEventListener('click', function() {
+                    if (isNavigating) {
+                        recalculateRouteFromCurrentPosition();
+                    }
+                });
+            }
+
+            console.log('Campus Navigation System initialized with real-time path recalculation');
         });
+
+        // Sidebar event handlers
+        function setupSidebarHandlers() {
+            const sideMenu = document.getElementById('sideMenu');
+            const overlay = document.getElementById('overlay');
+            const closeBtn = document.getElementById('closeBtn');
+
+            // Close sidebar when close button is clicked
+            closeBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                closeSidebar();
+            });
+
+            // Close sidebar when clicking the overlay
+            overlay.addEventListener('click', function() {
+                closeSidebar();
+            });
+
+            // Prevent clicks inside the sidebar from closing it
+            sideMenu.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+
+            // Close sidebar on escape key press
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && sideMenu.classList.contains('open')) {
+                    closeSidebar();
+                }
+            });
+
+            // Handle window resize
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    if (window.innerWidth > 768 && sideMenu.classList.contains('open')) {
+                        closeSidebar();
+                    }
+                }, 250);
+            });
+
+            // Smooth scroll for accordion items
+            const details = document.querySelectorAll('.accordion-item');
+            details.forEach(detail => {
+                detail.addEventListener('toggle', function() {
+                    if (this.open) {
+                        setTimeout(() => {
+                            this.scrollIntoView({ 
+                                behavior: 'smooth', 
+                                block: 'nearest' 
+                            });
+                        }, 300);
+                    }
+                });
+            });
+
+            // Touch swipe to close (mobile)
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            sideMenu.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            sideMenu.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                const swipeThreshold = 50;
+                const swipeDistance = touchEndX - touchStartX;
+                
+                if (swipeDistance > swipeThreshold) {
+                    closeSidebar();
+                }
+            }, { passive: true });
+
+            // Add fade-in animation to items when sidebar opens
+            sideMenu.addEventListener('transitionend', function() {
+                if (sideMenu.classList.contains('open')) {
+                    const items = document.querySelectorAll('.accordion-item');
+                    items.forEach((item, index) => {
+                        setTimeout(() => {
+                            item.style.animation = 'fadeIn 0.3s ease forwards';
+                        }, index * 50);
+                    });
+                }
+            });
+        }
     </script>
 </body>
 
